@@ -27,18 +27,18 @@ docker exec -it jobshunter-app bash
 
 Creating the Database Tables/Schema
 ```
-	php bin/console make:migration
+php bin/console make:migration
 ```
 
 execute migrations
 ```
-	php bin/console doctrine:migrations:migrate
+php bin/console doctrine:migrations:migrate
 ```
 
 **For testing only - you can load predefined database data**  
 Load fixtures
 ```
-	php bin/console doctrine:fixtures:load
+php bin/console doctrine:fixtures:load
 ```
 
 ## Links
