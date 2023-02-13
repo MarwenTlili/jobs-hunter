@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SocialLink{% endblock %}
+
+{% block body %}
+    <h1>SocialLink</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ social_link.id }}</td>
+            </tr>
+            <tr>
+                <th>Github</th>
+                <td>{{ social_link.github }}</td>
+            </tr>
+            <tr>
+                <th>Facebook</th>
+                <td>{{ social_link.facebook }}</td>
+            </tr>
+            <tr>
+                <th>Twitter</th>
+                <td>{{ social_link.twitter }}</td>
+            </tr>
+            <tr>
+                <th>Instagram</th>
+                <td>{{ social_link.instagram }}</td>
+            </tr>
+            <tr>
+                <th>Youtube</th>
+                <td>{{ social_link.youtube }}</td>
+            </tr>
+            <tr>
+                <th>Stackoverflow</th>
+                <td>{{ social_link.stackoverflow }}</td>
+            </tr>
+            <tr>
+                <th>Website</th>
+                <td>{{ social_link.website }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('social_link_index') }}">back to list</a>
+
+    <a href="{{ path('social_link_edit', {'id': social_link.id}) }}">edit</a>
+
+    {{ include('social_link/_delete_form.html.twig') }}
+{% endblock %}

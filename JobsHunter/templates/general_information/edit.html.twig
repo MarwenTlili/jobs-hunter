@@ -1,0 +1,110 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Edit GeneralInformation{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        {% if errors|length > 0 %}
+            {# class="position-absolute" is not responsive #}
+            <div id="toast_box" class="row float-right" >
+                <div class="col">
+                    <div id="toast_general_information" class="toast" role="alert" 
+                        aria-live="assertive" aria-atomic="true" data-delay="5000" {# data-autohide="false" #}  >
+                        <div class="toast-header">
+                            <i class="bi bi-x-octagon text-warning"></i>&nbsp;
+                            <strong class="mr-auto text-warning">Sorry!</strong>
+                            <small class="text-warning">WARNING</small>
+                            {# data-dismiss="toast" #}
+                            <button id="button_toast_close" data-dismiss="toast" type="button" 
+                                class="ml-2 mb-1 close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body">
+                            {% for error in errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        
+        <div class="row d-flex justify-content-center align-items-center">
+            <h5>Edit GeneralInformation</h5>
+            <button id="toggle_button" class="btn btn-sm d-block d-md-none ">
+                <span class="navicon"><i class="bi bi-arrows-fullscreen"></i></span>
+            </button>
+        </div>
+        
+        <div class="row">
+            <div id="sidebar" class="col-md-4 d-md-block p-3 mb-5">
+                {{ include('cv/_sidebar.html.twig') }}
+            </div>
+            <div class="col-md-7 shadow m-1">
+                <p>
+                    <small class="text-muted">after editing this page, you should click "Update" button at the bottom</small>
+                </p>
+                {% if general_information.photo %}
+                    <div class="container">
+                        <img id="general_information_photo_thumbnail" class="rounded-circle" 
+                                src="{{ asset('uploads/brochures/' ~ general_information.photo) }}" 
+                                alt="upload your picture" width="120" height="120" />
+                        <button type="button" class="btn btn-outline-danger btn-sm" 
+                            data-id="{{ general_information.id }}" data-toggle="modal" 
+                            data-target="#modal_photo_delete">
+                            {# <i class="bi bi-trash"></i> #}
+                            delete photo
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="container">
+                        <img id="general_information_photo_thumbnail" class="rounded-circle" 
+                        src="https://via.placeholder.com/120" width="120" height="120" />
+                    </div>
+                {% endif %}
+                {{ include('general_information/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+
+        <!-- Modal for delete confirmation -->
+        <div class="modal fade" id="modal_photo_delete" data-backdrop="static" data-keyboard="false" 
+            tabindex="-1" aria-labelledby="label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="label">Deleting photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="alert" class="alert alert-warning" role="alert" style="display: none;">
+                        <button type="button" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="alert-heading"><strong>Sorry!</strong></h4>
+                        <p id="warning">Could not remove photo.</p> <hr/>
+                        <p class="mb-0">
+                            <strong>Reason: </strong> <span id="reason">...</span>
+                        </p>
+                    </div>
+                    <div id="modal-body-content">
+                        if you delete this photo you can't recover it later!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="button_photo_delete_confirmation" type="button" class="btn btn-danger" enabled>
+                        Confirm Delete
+                        <div class="spinner-border spinner-border-sm" role="status" style="display: none;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

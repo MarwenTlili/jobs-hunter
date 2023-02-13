@@ -1,0 +1,57 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}New GeneralInformation{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+    
+        {% if errors|length > 0 %}
+                <div class="container toast-box" >
+                    <div class="row justify-content-end">
+                        <div class="col-sm-4">
+                            {% for error in errors %}
+                                {# data-autohide="false" #}
+                                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+                                    <div class="toast-header">
+                                        <img src="..." class="rounded mr-2" alt="...">
+                                        <strong class="mr-auto">Sorry!</strong>
+                                        <small>ERROR</small>
+                                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="toast-body">
+                                        {{ error }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        {% endif %}
+
+        <div class="row d-flex justify-content-center align-items-center">
+            <h5>Create new GeneralInformation</h5>
+            <button id="toggle_button" class="btn btn-sm d-block d-md-none ">
+                <span class="navicon"><i class="bi bi-arrows-fullscreen"></i></span>
+            </button>
+        </div>
+
+        <div class="row">
+            <div id="sidebar" class="col-md-4 d-md-block p-3 mb-5">
+                {{ include('cv/_sidebar.html.twig') }}
+            </div>
+            <div class="col-md-7 shadow m-1">
+                <p>
+                    <small class="text-muted">after editing this page, you should click "Update" button at the bottom</small>
+                </p>
+                <div class="container">
+                    <img id="general_information_photo_thumbnail" class="rounded-circle" 
+                    src="https://via.placeholder.com/120" width="120" height="120" />
+                </div>
+                {{ include('general_information/_form.html.twig') }}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

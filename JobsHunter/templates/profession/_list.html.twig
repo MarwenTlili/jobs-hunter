@@ -1,0 +1,10 @@
+
+<div class="container">
+    <div class="row">
+        {% for profession in professions %}
+            <a class="dropdown-item position-static col-lg-3 col-md-4" href="{{ path('profession_jobs', {'name': profession.name} ) }}">
+                {{ profession.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

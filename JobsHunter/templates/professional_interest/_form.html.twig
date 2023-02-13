@@ -1,0 +1,11 @@
+{# {{ form_start(form, { 'attr': {'class': 'shadow'} }) }} #}
+{{ form_start(form) }}
+    {{ form_row(form.level, {'label': 'Niveau d\'experience'}) }}
+    {{ form_row(form.jobType, {'label': 'Type d\'emploi que vous cherchez'}) }}
+    {{ form_row(form.wantedOccupation, {'label': 'Domaines d\'activites qui vous intéressent'}) }}
+    {{ form_row(form.wantedSalary, {'label': 'salaire minimum que vous accepteriez'}) }}
+    {{ form_row(form.actualStatus, {'label': 'Votre statut actuel'}) }}
+    {{ form_row(form.findMeByCompany, {'label': 'me trouver par les entreprises'}) }}
+    {{ form_row(form.professions) }}
+    <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

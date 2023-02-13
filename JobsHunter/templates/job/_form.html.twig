@@ -1,0 +1,22 @@
+{{ form_start(form) }}
+    {{ form_row(form.Company, {'label': 'Entreprise'})}}
+    {# {{ form_row(form.tags, {'label': 'Tags'}) }} #}
+    {{ form_row(form.tags) }}
+    {{ form_row(form.title, {'label': 'Titre d\'emploi'}) }}
+    {{ form_row(form.professions, {'label': 'Professions'}) }}
+    {{ form_row(form.country, {'label': 'Pays'}) }}
+    {{ form_row(form.address, {'label': 'Addresse'}) }}
+    {{ form_row(form.expireAt, {'label': 'Date d\'expiration'}) }}
+    {{ form_row(form.postsNumber, {'label': 'Nombre de posts'}) }}
+    {{ form_row(form.type, {'label': 'Type d\'emploi'}) }}
+    {{ form_row(form.experienceMin, {'label': 'Experience min (ans)'}) }}
+    {{ form_row(form.experienceMax, {'label': 'Experience max (ans)'}) }}
+    {{ form_row(form.educationLevel, {'label': 'Niveau d\'etude'}) }}
+    {{ form_row(form.requiredLanguages, {'label': 'Langues démandé'}) }}
+    {{ form_row(form.description, {'label': 'Description d\'emploi'}) }}
+    {{ form_row(form.requirements, {'label': 'Exigences de l\'emploi'}) }}
+    {# {{ form_row(form.createdAt) }} #}
+    <button class="btn btn-primary">
+        {{ button_label|default('Publier') }}
+    </button>
+{{ form_end(form) }}

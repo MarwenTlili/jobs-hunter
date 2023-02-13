@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Profession index{% endblock %}
+
+{% block body %}
+    <h1>Profession index</h1>
+
+    {% for profession in professions %}
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="{{ path('profession_jobs', {'name': profession.name} ) }}">{{ profession.name }}</a>
+            </li>
+        </ul>
+    {% endfor %}
+{% endblock %}

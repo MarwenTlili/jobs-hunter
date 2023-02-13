@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Company index{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <h1>Companies</h1>
+        {% for company in companies %}
+            <div class="company">
+            
+                <div class="name">
+                    <i class="bi bi-building"></i> {{ company.name }}
+                </div>
+
+                <div class="address">
+                    <i class="bi bi-geo-alt"></i> {{ company.address }}
+                </div>
+
+                <div class="phone">
+                    <i class="bi bi-telephone"></i> {{ company.phone }}
+                </div>
+
+                <div class="website">
+                    <i class="bi bi-link"></i> <a href="{{ company.website }}">{{ company.website }}</a>
+                </div>
+
+                <div class="description text-muted">
+                    {{ company.description[:120] ~ '...'}}
+                </div>
+
+                <div class="link">
+                    <a class="btn btn-info" href="{{ path('company_show', {'slug': company.slug}) }}">Afficher</a>
+                </div>
+
+            </div><hr>
+        {% else %}
+            <div>
+                <p>no records found</p>
+            </div>
+        {% endfor %}
+
+        <div class="navigation">
+        {{ knp_pagination_render(companies, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig')}}
+        </div>
+    </div>
+
+{% endblock %}

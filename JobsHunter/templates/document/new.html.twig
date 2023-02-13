@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}New Document{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+    
+        {% if errors|length > 0 %}
+            <div id="toast_box" class="row float-right" >
+                <div class="col">
+                    {# data-autohide="false" #}
+                    <div id="toast" class="toast" role="alert" 
+                        aria-live="assertive" aria-atomic="true" data-delay="5000" >
+                        <div class="toast-header">
+                            <i class="bi bi-x-octagon text-warning"></i>&nbsp;
+                            <strong class="mr-auto text-warning">Sorry!</strong>
+                            <small class="text-warning">WARNING</small>
+                            <button id="button_toast_close" data-dismiss="toast" type="button" 
+                                class="ml-2 mb-1 close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body">
+                            {% for error in errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        
+        {# title and responsive toggle button #}
+        <div class="row d-flex justify-content-center align-items-center">
+            <h5>Upload new Documents</h5>
+            <button id="toggle_button" class="btn btn-sm d-block d-md-none">
+                <span class="navicon"><i class="bi bi-arrows-fullscreen"></i></span>
+            </button>
+        </div>
+
+        {# responsive sidebar and content #}
+        <div class="row">
+            <div id="sidebar" class="col-md-4 d-md-block p-3 mb-5">
+                {{ include('cv/_sidebar.html.twig') }}
+            </div>
+            <div class="col-md-7 shadow m-1">
+                <p>
+                    <small class="text-muted">after editing this page, you should click "Update" button at the bottom</small>
+                </p>
+                {{ include('document/_form.html.twig') }}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

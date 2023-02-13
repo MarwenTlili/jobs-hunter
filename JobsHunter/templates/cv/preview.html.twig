@@ -1,0 +1,25 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}CV Preview{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center d-print-none">
+            <h5>CV Preview</h5>
+            <button id="toggle_button" class="btn d-block d-md-none">
+                <span class="navicon"><i class="bi bi-arrows-fullscreen"></i></span>
+            </button>
+        </div>
+        
+        <div class="row">
+            <div id="sidebar" class="col-md-4 d-md-block p-3 mb-5 d-print-none">
+                {{ include('cv/_sidebar.html.twig') }}
+            </div>
+            <div class="col-md-7 shadow m-1">
+                {{ include('cv/_preview.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

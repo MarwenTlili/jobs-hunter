@@ -1,0 +1,52 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Job index{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        {% include "job/_search.html.twig" with {form:form} only %}
+
+        <h1>Job index</h1>
+    
+        <div><h6>Il y a <b>{{ jobsCount }}</b> Offre.</h6></div>
+        <hr>
+        {% for job in jobs %}
+            <div class="job">
+
+                <div class="title">
+                    <a href="{{ path('job_show', {'slug': job.slug}) }}">
+                        <h3>{{ job.title }}</h3>
+                    </a>
+                </div>
+
+                <div class="createdAt">
+                    <b>{{ job.createdAt ? job.createdAt|date('Y-m-d') : '' }}</b>
+                </div>
+
+                <div class="company">
+                    <i class="bi bi-building" ></i> {{ job.company.name }}
+                </div>
+
+                <div class="address">
+                    <i class="bi bi-geo-alt" ></i> {{ job.address }}
+                </div>
+                
+                <div class="description text-muted">
+                    {{ job.description[:120] ~ '...'}}
+                </div>
+
+                <a class="btn btn-info" href="{{ path('job_show', {'slug': job.slug}) }}">Afficher ...</a>
+
+            </div><hr>
+        {% else %}
+            <div>
+                <p>no records found</p>
+            </div>
+        {% endfor %}
+
+        <div class="navigation col-12 d-flex justify-content-center">
+            {{ knp_pagination_render(jobs, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig')}}
+        </div>
+    </div>
+
+{% endblock %}

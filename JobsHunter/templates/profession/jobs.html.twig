@@ -1,0 +1,48 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}métier{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="jobsCount">
+            <h6>Il y a <b>{{ jobsCount }}</b> Offre.</h6>
+        </div>
+
+        {% for job in jobs %}
+            <div class="job">
+                <div class="title">
+                    <a href="{{ path('job_show', {'slug': job.slug}) }}"><h3>{{ job.title }}</h3></a>
+                </div>
+
+                <div class="createdAt">
+                    <b>{{ job.createdAt ? job.createdAt|date('Y-m-d') : '' }}</b>
+                </div>
+
+                <div class="address">
+                    {{ job.address }}
+                </div>
+                
+                <div class="description">
+                    {{ job.description[:120] ~ '...'}}
+                </div>
+
+                <div class="link">
+                    <a class="btn btn-info" href="{{ path('job_show', {'slug': job.slug}) }}">Afficher</a>
+                </div>
+
+            </div><hr>
+        {% endfor %}
+
+        {% if jobs|length == 0 %}
+            <div class="container" id="no-content" >
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6>Aucune offre mour cette métier</h6>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    
+{% endblock %}

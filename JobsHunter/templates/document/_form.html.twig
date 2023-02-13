@@ -1,0 +1,64 @@
+{{ form_start(form) }}
+    {# {{ form_widget(form) }} #}
+    {{ form_row(form._token) }}
+
+    {% if document %}
+        {% if document.diploma %}
+            <div id="document_form_diploma_link">
+                <a href="{{ asset('uploads/pdf/' ~ document.diploma) }}">
+                    <small>View your diploma file (PDF)</small>
+                </a> 
+                <a type="button" class="badge badge-danger" title="remove" data-toggle="modal"
+                    data-target="#modal_document_delete" data-id="{{ document.id }}" 
+                    data-document-type="diploma" data-document-name="{{ document.diploma }}">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {# {{ form_errors(form.diplomaFileName) }} #}
+    <div class="form-group mb-3">
+        {{ form_label(form.diplomaFileName) }}
+        {{ form_widget(
+            form.diplomaFileName, 
+            {'attr': {'aria-describedby': 'diplomaDocumentHelpBlock'}}
+        ) }}
+        <small id="diplomaDocumentHelpBlock" class="form-text text-muted">
+            Allowed maximum size is 1 MB, valid file type (pdf)
+        </small>
+    </div>
+    {{ form_help(form.diplomaFileName) }}
+
+    <hr>
+
+    {% if document %}
+        {% if document.realisation %}
+            <div id="document_form_realisation_link">
+                <a href="{{ asset('uploads/pdf/' ~ document.realisation) }}">
+                    <small>View your realisation file (PDF)</small>
+                </a>
+                <a type="button" class="badge badge-danger" title="remove" data-toggle="modal"
+                    data-target="#modal_document_delete" data-id="{{ document.id }}" 
+                    data-document-type="realisation" data-document-name="{{ document.realisation }}">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {# {{ form_errors(form.realisationFileName) }} #}
+    <div class="form-group mb-3">
+        {{ form_label(form.realisationFileName) }}
+        {{ form_widget(
+            form.realisationFileName, 
+            {'attr': {'aria-describedby': 'inputGroupFileAddon01'}}
+        ) }}
+        <small id="diplomaDocumentHelpBlock" class="form-text text-muted">
+            Allowed maximum size is 10 MB, valid file type (pdf)
+        </small>
+    </div>
+    {{ form_help(form.realisationFileName) }}
+
+    <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

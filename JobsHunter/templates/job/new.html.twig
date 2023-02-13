@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}New Job{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1>Nouveau offre d'emploi</h1>
+
+        {{ include('job/_form.html.twig') }}
+    </div>
+
+    {# <a href="{{ path('job_index') }}">back to list</a> #}
+{% endblock %}

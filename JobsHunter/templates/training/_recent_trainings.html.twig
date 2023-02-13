@@ -1,0 +1,31 @@
+{% for training in trainings %}
+    <div class="training">
+
+        <div class="row">
+            <div class="title col-xs-12 col-sm-9 col-md-10">
+                <a class="link" href="{{ path('training_show', {'slug': training.slug}) }}">
+                    <h3>{{ training.title }}</h3>
+                </a>
+            </div>
+            <div class="date col-xs-12 col-sm-3 col-md-2">
+                <b>{{ training.createdAt ? training.createdAt|date('Y-m-d') : '' }}</b>
+            </div>
+        </div>
+        
+         <div class="row">
+            <div class="company col-sm-12"><i class="bi bi-building" ></i> {{ training.company.name }}</div>
+            <div class="address col-sm-12"><i class="bi bi-geo-alt" ></i> {{ training.address }}</div>
+        </div>
+
+        <div class="row">
+            <div class="description col-sm-12">{{ training.description[:120] ~ '...'}}</div>
+        </div>
+
+        <div class="row">
+            <div class="link col-sm-12">
+                <a class="link btn btn-info" href="{{ path('training_show', {'slug': training.slug}) }}">Afficher ...</a>
+            </div>
+        </div>
+
+    </div><hr>
+{% endfor %}

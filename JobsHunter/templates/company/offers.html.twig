@@ -1,0 +1,59 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Jobs{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <h1>Offres</h1>
+        <a href="{{path('job_new', {'slug': app.user.company})}}">Publier une annonce</a>
+        <hr>
+        {% for job in jobs %}
+            <div class="job">
+                <di class="title">
+                    <a href="{{ path('job_show', {'slug': job.slug}) }}"> <h3>{{ job.title }}</h3></a>
+                </div>
+
+                <div class="createdAt">
+                    <b>Created At</b>
+                    {{ job.createdAt ? job.createdAt|date('d-m-Y') : '' }}
+                </div>
+
+                <div class="info">
+                    there is 
+                    <a href="{{ path('seekers_show', {'slug': job.slug}) }}">
+                        <b>{{ job.seekersApplyed | length }}</b>
+                    </a> 
+                    seekers applied for this job
+                    
+                </div>
+
+                <div class="address">
+                    <b>Address</b>
+                    {{ job.address }}
+                </div>
+
+                <div class="description">
+                    <b>Description</b>
+                    <div class="text-muted">{{ job.description[:120] ~ '...'}}</div>
+                </div>
+
+                <a class="btn btn-info" href="{{ path('job_show', {'slug': job.slug}) }}">show</a>
+
+                <a class="btn btn-warning" href="{{ path('job_edit', {'slug': job.slug}) }}">edit</a>
+
+            </div><hr>
+        {% else %}
+            <div>
+                <p>no records found</p>
+            </div>
+        {% endfor %}
+
+        <div class="navigation">
+            {{ knp_pagination_render(jobs, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig')}}
+        </div>
+
+    </div>
+
+{% endblock %}

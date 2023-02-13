@@ -1,0 +1,88 @@
+version: "3.7"
+
+services:
+    php:
+        container_name: 'jobshunter-app'
+        build:
+          context: ./php
+        ports:
+          - 9001:8000
+        environment: 
+            APP_ENV: dev
+            DATABASE_URL: mysql://root:secret@mysql:3306/jobshunter
+        volumes:
+          - ./JobsHunter:/var/www/jobshunter
+        #   which pip.ini-{development | production} you want to use 
+          - ./php/php.ini-development:/usr/local/etc/php/php.ini:ro
+        depends_on:
+            - mysql
+        networks: 
+            - symfony
+    
+    nginx:
+        image: nginx:1.21-alpine
+        container_name: jobshunter-nginx
+        ports:
+            - 8001:80
+        volumes:
+            - ./JobsHunter:/var/www/jobshunter
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+            - php
+            - mysql
+        networks: 
+            - symfony
+    
+    mysql:
+        image: mysql:5.7
+        container_name: jobshunter-mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        ports: 
+            - 3307:3306
+        volumes:
+            - jobshunter-mysql-data:/var/lib/mysql
+        networks: 
+            - symfony
+
+    phpmyadmin:
+        image: phpmyadmin:5.1.1
+        container_name: jobshunter-phpmyadmin
+        restart: always
+        environment:
+            PMA_HOST: mysql
+            PMA_USER: root
+            PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        ports:
+            - 8080:80
+        depends_on:
+            - mysql
+        networks: 
+            - symfony
+    
+    mailcatcher:
+        image: schickling/mailcatcher
+        container_name: jobshunter-mailcatcher
+        ports: [1025, 1080]
+        networks: 
+            - symfony
+    
+    # redis:
+    #     image: redis:5-alpine
+    #     container_name: ${APP_NAME}-redis
+    #     ports: [6379]
+
+    # rabbitmq:
+    #     image: rabbitmq:3.7-management
+    #     container_name: ${APP_NAME}-rabbitmq
+    #     ports: [5672, 15672]
+
+volumes:
+    jobshunter-mysql-data:
+
+networks: 
+    symfony:

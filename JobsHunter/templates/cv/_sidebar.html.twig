@@ -1,0 +1,54 @@
+<div class="d-inline-flex p-2 box-inner navbar navbar-light bg-light shadow rounded">
+    <ul class="nav nav-tabs flex-column">
+        <li class="nav-item" role="presentation">
+            <a id="interest-tab" href="{{ path('professional_interest_index') }}" 
+                class="nav-link {% if app.request.get('_route')=='professional_interest_new' or app.request.get('_route')=='professional_interest_edit' %} active {% endif %}" >
+                Intérêts Professionnels
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a id="general-tab" href="{{ path('general_information_index') }}" 
+                class="nav-link {% if app.request.get('_route')=='general_information_new' or app.request.get('_route')=='general_information_edit' %} active {% endif %}" 
+                role="tab" aria-selected="false">
+                Information Générales
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a id="information-tab" href="{{ path('professional_information_index') }}" class="nav-link
+                {% if app.request.get('_route')=='professional_information_new' or app.request.get('_route')=='professional_information_edit' %} active {% endif %}" >
+                Information Professionnelles
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a id="experience-tab" href="{{ path('experience_index') }}" class="nav-link
+            {% if app.request.get('_route')=='experience_index' or app.request.get('_route')=='experience_new' or app.request.get('_route')=='experience_edit' %} active {% endif %}" >
+                Experience
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a id="education-tab" href="{{ path('education_index') }}" class="nav-link
+                {% if app.request.get('_route')=='education_index' or app.request.get('_route')=='education_new' or app.request.get('_route')=='education_edit' %} active {% endif %}" >
+                Education
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a id="social-tab" href="{{ path('social_link_index') }}" class="nav-link
+                {% if app.request.get('_route')=='social_link_new' or app.request.get('_route')=='social_link_edit' %} active {% endif %}" >
+                Présence en ligne
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a id="documents-tab" href="{{ path('document_index') }}" class="nav-link
+                {% if app.request.get('_route')=='document_index' or app.request.get('_route')=='document_new' or app.request.get('_route')=='document_edit' %} active {% endif %}" >
+                Documents
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a id="cv_preview" href="{{ path('cv_preview', {'user': app.user}) }}" class="nav-link
+                {% if app.request.get('_route')=='cv_preview'%} active {% endif %}" 
+                role="tab" aria-selected="false">
+                Aperçu CV
+            </a>
+        </li>
+    </ul>
+</div>

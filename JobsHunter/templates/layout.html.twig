@@ -1,0 +1,233 @@
+{% extends "base.html.twig" %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm ">
+        
+        <a class="navbar-brand" href="{{path('app_homepage')}}">JobsHunter</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.get('_route')=='job_index' %} active {% endif %}" href="{{path('job_index')}}">Emplois</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.get('_route')=='training_index' %} active {% endif %}" href="{{path('training_index')}}">Formations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.get('_route')=='company_index' %} active {% endif %}" href="{{path('company_index')}}">Entreprises</a>
+                </li>
+
+                <li class="nav-item dropdown position-static">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Métiers
+                    </a>
+                    <div class="dropdown-menu mt-0 w-100 shadow border-outline-success" aria-labelledby="navbarDropdown">
+                        {{ render(path('profession_names'), {default: 'Loading...'}) }}
+                        {# {{ render_esi(path('profession_names'), {default: 'Loading...'}) }} #}
+                        {# {{ render_hinclude(controller('App\\Controller\\ProfessionController::getNames')) }} #}
+
+                        {# Async Call using hinclude.js: BAD PRACTICE, fragments can't be manipulated using jQuery#}
+                        {# {{ render_hinclude(path('profession_names')) }} #}
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.get('_route')=='contact' %} active {% endif %}" href="{{path('contact')}}">Contact</a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('admin_homepage')}}">Dashboard</a>
+                    </li>
+                {% endif %}
+            </ul>
+            
+            <form id="nav-form-dropdown-btn" class="form-inline mt-2 mt-md-0">
+                {% if not app.user %}
+                    <a href="{{path('app_login')}}" class="nav-link">Login</a>|
+                    <a href="{{ path('app_register') }}" class="nav-link">Register</a>
+                {% endif %}
+                
+                {% if app.user %}
+                    <div id="user_dropdown" class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ app.user.username }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% if is_granted('ROLE_COMPANY') %}
+
+                                {% if app.user.company %}
+                                    <a class="dropdown-item" href="{{ path('company_edit', {'slug': app.user.company}) }}">Profile</a>
+                                    <a class="dropdown-item" href="{{path('job_new', {'slug': app.user.company})}}">Publier un Offre</a>
+                                    <a class="dropdown-item" href="{{path('company_offers', {'slug': app.user.company})}}">List des Offres</a>
+                                    <a class="dropdown-item" href="{{path('seeker_index')}}">CVs</a>
+                                {% else %}
+                                    <a class="dropdown-item" href="{{ path('company_new') }}">Profile</a>
+                                    <a class="dropdown-item disabled" href="#">Publier un Offre</a>
+                                    <a class="dropdown-item disabled" href="#">List des Offres</a>
+                                    <a class="dropdown-item disabled" href="#">CVs</a>
+                                {% endif %}
+
+                            {% elseif is_granted('ROLE_SEEKER') %}
+                                {% if app.user.isVerified %}
+
+                                    {% if app.user.seeker %}
+                                        <a href="{{path('seeker_edit', {'id': app.user.seeker.id})}}" class="dropdown-item">Profile</a>
+                                        <a href="{{path('professional_interest_index')}}" class="dropdown-item">CV</a>
+                                    {% else %}
+                                        <a href="{{path('seeker_new')}}" class="dropdown-item">Profile</a>
+                                        <a href="#" class="dropdown-item disabled">CV</a>
+                                    {% endif %}
+
+                                {% else %}
+                                    <a href="#" class="dropdown-item disabled">Profile</a>
+                                    <a href="#" class="dropdown-item disabled">CV</a>
+                                {% endif %}
+
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <a class="dropdown-item" href="{{path('app_logout')}}">Logout</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </nav>
+    {% if app.user %}
+        {% if not app.user.isVerified %}
+            <div class="alert alert-secondary" role="alert">
+                <strong>Verification link</strong> sent to your E-Mail click it to enable your profile!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+    {% endif %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block body %}{% endblock %}
+
+{% block footer %}
+    <button id="scrollup" class="btn btn-danger btn-floating btn-lg d-print-none">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+    <!-- Footer -->
+    <footer class="text-center text-lg-start bg-light text-muted d-print-none">
+        <!-- Section: Social media -->
+        <section id="top" class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+            <!-- Left -->
+            <div class="me-5 d-none d-lg-block">
+                <span>Get connected with us on social networks:</span>
+            </div>
+            <!-- Left -->
+            
+            <!-- Right -->
+            <div class="social-links">
+                <a href="#" class="me-4 text-reset">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="bi bi-twitter"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="bi bi-google"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="#" class="me-4 text-reset">
+                    <i class="bi bi-github"></i>
+                </a>
+            </div>
+            <!-- Right -->
+        </section>
+        <!-- Section: Social media -->
+
+        <!-- Section: Links  -->
+        <section id="mid" class="">
+            <div class="container-fluid text-start text-md-start mt-5">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <!-- Content -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        <i class="bi bi-gem me-3"></i>JobsHunter
+                    </h6>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex animi perferendis aut aspernatur molestiae reiciendis culpa.
+                    </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">Chercheur</h6>
+                        <p><a href="{{path('job_index')}}" class="text-reset">Trouver un emploi</a></p>
+                        <p><a href="{{path('training_index')}}" class="text-reset">Trouver une formation</a></p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">Employeur</h6>
+                        
+                            {% if is_granted('ROLE_COMPANY') %}
+                                {% if app.user.company %}
+                                    <p><a href="{{ path('job_new', {'slug': app.user.company}) }}" class="text-reset">Publier une annonce</a></p>
+                                    <p><a href="{{path('seeker_index')}} " class="text-reset">Trouver un CV</a></p>
+                                {% else %}
+                                    <p><a href="#" class="text-reset disabled">Publier une annonce</a></p>
+                                    <p><a href="#" class="text-reset disabled">Trouver un CV</a></p>
+                                {% endif %}
+                            {% else %}
+                                <p><a href="{{ path('app_login') }}" class="text-reset disabled">Publier une annonce</a></p>
+                                <p><a href="{{ path('app_login') }}" class="text-reset disabled">Trouver un CV</a></p>
+                            {% endif %}
+
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Contact
+                        </h6>
+                        <p><i class="bi bi-house-fill me-3"></i> New York, NY 10012, US</p>
+                        <p>
+                            <i class="bi bi-envelope-fill me-3"></i>
+                            info@jobshunter.com
+                        </p>
+                        <p><i class="bi bi-telephone-fill me-3"></i> + 01 234 567 88</p>
+                        <p><i class="bi bi-printer-fill me-3"></i> + 01 234 567 89</p>
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
+        <!-- Section: Links  -->
+
+        <!-- Copyright -->
+        <div id="bottom" class="text-center p-4">
+            © 2021 Copyright:
+            <a class="text-reset fw-bold" href="https://www.jobshunter.com/">www.jobshunter.com</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+{% endblock %}
+

@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Seeker index{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h3>Seekers index</h3>
+        </div>
+
+        {% for seeker in seekers %}
+            <div class="seeker">
+                <div class="row">
+                    {{ seeker.firstName }} {{ seeker.lastName }}
+                </div>
+                <div class="civility">{{ seeker.civility }}</div>
+                <div class="birthDate">{{ seeker.birthDate ? seeker.birthDate|date('Y-m-d') : '' }}</div>
+                
+                <div class="link"><a href="{{ path('seeker_show', {'id': seeker.id}) }}">show</a></div>
+            </div>
+        {% else %}
+            no records found
+        {% endfor %}
+    </div>
+    
+{% endblock %}

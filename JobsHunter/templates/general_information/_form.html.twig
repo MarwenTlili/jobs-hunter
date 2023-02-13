@@ -1,0 +1,28 @@
+{{ form_start(form) }}
+    {# {{ form_widget(form) }} #}
+    {{ form_row(form._token) }}
+
+    {# {{ form_row(form.photo) }} #}
+    <div class="form-group">
+        {{ form_label(form.photo) }}
+        {{ form_errors(form.photo) }}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+            </div>
+            {{ form_widget(form.photo, {'attr': {'aria-describedby': 'inputGroupFileAddon01'}}) }}
+        </div>
+        {{ form_help(form.photo) }}
+    </div>
+
+    {{ form_row(form.motivation) }}
+    {{ form_row(form.country) }}
+    {{ form_row(form.address) }}
+    {{ form_row(form.region) }}
+    {{ form_row(form.postalCode) }}
+    {{ form_row(form.haveDrivingLicence) }}
+    {{ form_row(form.ownACar) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.phone2) }}
+    <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
+{{ form_end(form, {render_rest: false}) }}

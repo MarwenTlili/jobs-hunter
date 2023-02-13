@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SocialLink index{% endblock %}
+
+{% block body %}
+    <h1>SocialLink index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Github</th>
+                <th>Facebook</th>
+                <th>Twitter</th>
+                <th>Instagram</th>
+                <th>Youtube</th>
+                <th>Stackoverflow</th>
+                <th>Website</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for social_link in social_links %}
+            <tr>
+                <td>{{ social_link.id }}</td>
+                <td>{{ social_link.github }}</td>
+                <td>{{ social_link.facebook }}</td>
+                <td>{{ social_link.twitter }}</td>
+                <td>{{ social_link.instagram }}</td>
+                <td>{{ social_link.youtube }}</td>
+                <td>{{ social_link.stackoverflow }}</td>
+                <td>{{ social_link.website }}</td>
+                <td>
+                    <a href="{{ path('social_link_show', {'id': social_link.id}) }}">show</a>
+                    <a href="{{ path('social_link_edit', {'id': social_link.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('social_link_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    
+    <div class="wrap">
+        <div class="container-fluid">
+            <h3>Dérniere offres d'emploi</h3>
+            {% include "job/_recent_jobs.html.twig" %}
+            
+
+            <h3>Dérniere formations</h3>
+            {% include "training/_recent_trainings.html.twig" %}
+        </div>
+    </div>
+
+{% endblock %}

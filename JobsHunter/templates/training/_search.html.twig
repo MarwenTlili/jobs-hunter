@@ -1,0 +1,6 @@
+{# {{ form_start(form, {'action': path('job_index'), 'method': 'GET'})}} #}
+{{ form_start(form)}}
+    {{form_row(form.keyword)}}
+    {{form_row(form.address)}}
+    <button class="btn btn-outline-success">{{ button_label|default('Search') }}</button>
+{{ form_end(form) }}

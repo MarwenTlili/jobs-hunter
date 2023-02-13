@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CV{% endblock %}
+
+{% block body %}
+    <h1>Edit CV</h1>
+
+    {{ include('cv/_form.html.twig', {'button_label': 'Update'}) }}
+
+{% endblock %}
