@@ -43,7 +43,7 @@ class GeneralInformationController extends AbstractController{
         $form = $this->createForm(GeneralInformationType::class, $generalInformation);
         $form->handleRequest($request);
         
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $brochureFile */
             $brochureFile = $form->get('photo')->getData();
             
@@ -56,19 +56,17 @@ class GeneralInformationController extends AbstractController{
                 }
             }
             
-            // persist form data only if there is no errors (like upload file error, ...)
-            if (empty($errors)) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($generalInformation);
-                $cv = $this->getUser()->getSeeker()->getCv();
-                $cv->setGeneralInformation($generalInformation);
-                $entityManager->persist($cv);
-                $entityManager->flush();
-                return $this->redirectToRoute('general_information_edit',[
-                    'id' => $generalInformation->getId(),
-                ],Response::HTTP_MOVED_PERMANENTLY);
-            }
-
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($generalInformation);
+            $cv = $this->getUser()->getSeeker()->getCv();
+            $cv->setGeneralInformation($generalInformation);
+            $entityManager->persist($cv);
+            $entityManager->flush();
+            
+            return $this->redirectToRoute('general_information_edit',[
+                'id' => $generalInformation->getId(),
+                'errors' => $errors
+            ],Response::HTTP_TEMPORARY_REDIRECT);
         }
 
         return $this->render('general_information/new.html.twig', [

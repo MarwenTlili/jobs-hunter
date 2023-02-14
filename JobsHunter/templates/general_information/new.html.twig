@@ -6,28 +6,28 @@
     <div class="container-fluid">
     
         {% if errors|length > 0 %}
-                <div class="container toast-box" >
-                    <div class="row justify-content-end">
-                        <div class="col-sm-4">
-                            {% for error in errors %}
-                                {# data-autohide="false" #}
-                                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
-                                    <div class="toast-header">
-                                        <img src="..." class="rounded mr-2" alt="...">
-                                        <strong class="mr-auto">Sorry!</strong>
-                                        <small>ERROR</small>
-                                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="toast-body">
-                                        {{ error }}
-                                    </div>
+            <div id="toast_box" class="container" >
+                <div class="row justify-content-end">
+                    <div class="col-sm-4">
+                        {% for error in errors %}
+                            {# data-autohide="false" #}
+                            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+                                <div class="toast-header">
+                                    <img src="..." class="rounded mr-2" alt="...">
+                                    <strong class="mr-auto">Sorry!</strong>
+                                    <small>ERROR</small>
+                                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                            {% endfor %}
-                        </div>
+                                <div class="toast-body">
+                                    {{ error }}
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
+            </div>
         {% endif %}
 
         <div class="row d-flex justify-content-center align-items-center">
