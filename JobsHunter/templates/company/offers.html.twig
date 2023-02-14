@@ -7,7 +7,7 @@
     <div class="container-fluid">
 
         <h1>Offres</h1>
-        <a href="{{path('job_new', {'slug': app.user.company})}}">Publier une annonce</a>
+        <a href="{{path('job_new', {'slug': app.user.company.slug})}}">Publier une annonce</a>
         <hr>
         {% for job in jobs %}
             <div class="job">

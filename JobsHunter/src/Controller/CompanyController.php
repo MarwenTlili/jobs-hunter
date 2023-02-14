@@ -3,16 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Company;
-use App\Entity\Job;
 use App\Form\CompanyType;
-use App\Form\SearchCompaniesType;
 use App\Repository\CompanyRepository;
-use App\Repository\JobRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/company")
