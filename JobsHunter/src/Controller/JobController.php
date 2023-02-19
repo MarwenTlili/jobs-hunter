@@ -58,6 +58,14 @@ class JobController extends AbstractController
         $job = new Job();
         $job->setCompany($company);
         $job->setCountry($company->getCountry());
+
+        #######################################################################
+        // Test
+        $job->setTitle("Développeur (H/F) PHP / Symfony");
+        $job->setExpireAt(new \DateTimeImmutable());
+        $job->setPostsNumber(2);
+        #######################################################################
+
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
@@ -80,13 +88,6 @@ class JobController extends AbstractController
      */
     public function show(Job $job): Response
     {
-        // $jobProfilePage = $this->generateUrl('job_show', [
-        //     'title' => $job->getTitle(),
-        // ]);
-        // dump($jobProfilePage);
-
-        // return $this->redirectToRoute('job_show',['slug'=> $jobProfilePage, 'job'=>$job]);
-
         return $this->render('job/show.html.twig', [
             'job' => $job,
         ]);
