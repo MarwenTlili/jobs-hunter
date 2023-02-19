@@ -429,7 +429,7 @@ class Job
      */
     public function setSlug(): self{
         $slugify = new Slugify();
-        $this->slug = $slugify->slugify($this->getTitle());
+        $this->slug = $slugify->slugify($this->getTitle())."_".uniqid();
         return $this;
     }
 
