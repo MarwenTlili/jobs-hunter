@@ -12,13 +12,17 @@
             </button>
         </div>
         
-        <div class="row">
+        <div class="row d-print-none">
             <div id="sidebar" class="col-md-4 d-md-block p-3 mb-5 d-print-none">
                 {{ include('cv/_sidebar.html.twig') }}
             </div>
             <div class="col-md-7 shadow m-1">
                 {{ include('cv/_preview.html.twig', {'button_label': 'Update'}) }}
             </div>
+        </div>
+        <div class="row justify-content-center">
+            <a class="btn btn-primary d-print-none" href="{{ path('cv_print') }}">Print</a>&nbsp;
+            <a class="btn btn-primary d-print-none" href="{{ path('cv_preview_template', {'user': app.user}) }}">preview</a>
         </div>
     </div>
     

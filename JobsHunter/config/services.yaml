@@ -42,3 +42,8 @@ services:
     # App\Service\PdfUploader:
     #     arguments:
     #         $documentsDirectory: '%documents_directory%'
+
+    # service for Print CV to PDF file
+    App\Service\PrintCV:
+        arguments:
+            $documentsDirectory: '%documents_directory%'

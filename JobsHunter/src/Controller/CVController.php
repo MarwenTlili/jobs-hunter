@@ -5,26 +5,25 @@ namespace App\Controller;
 use App\Entity\CV;
 use App\Form\CVType;
 use App\Repository\CVRepository;
-use Dompdf\Css\Stylesheet;
-use Dompdf\Dompdf;
-use Dompdf\Options;
-use Knp\Snappy\Pdf;
+use App\Service\FileUploader;
+use App\Service\PrintCV;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/cv")
  */
-class CVController extends AbstractController
-{
+class CVController extends AbstractController{
     private $security;
+    private $printCV;
 
-    public function __construct(Security $security){
+    public function __construct(Security $security, PrintCV $printCV){
         $this->security = $security;
+        $this->printCV = $printCV;
     }
     
     /**
@@ -128,8 +127,7 @@ class CVController extends AbstractController
     /**
      * @Route("/{user}/preview", name="cv_preview", methods={"GET"})
      */
-    public function preview(): Response
-    {
+    public function preview(): Response{
         $this->denyAccessUnlessGranted('ROLE_SEEKER');
 
         /** @var \App\Entity\User $user */
@@ -143,71 +141,40 @@ class CVController extends AbstractController
     }
 
     /**
-     * @Route("/print/topdf", name="cv_print")
+     * @Route("/{user}/_preview", name="cv_preview_template", methods={"GET"})
      */
-    public function printAction(Pdf $knpSnappyPdf): PdfResponse
-    {
+    public function previewTemplate(){
+        $this->denyAccessUnlessGranted('ROLE_SEEKER');
+
         /** @var \App\Entity\User $user */
         $user = $this->security->getUser();
         $seeker = $user->getSeeker();
         $cv = $seeker->getCv();
 
-        $pageUrl = $this->generateUrl('cv_preview', array(
-            'user' => $this->security->getUser(),
+        return $this->render('cv/_preview.html.twig', [
             'cv' => $cv
-        ), false); // use absolute path!
-
-        dump($pageUrl);
-
-        return new PdfResponse(
-            $knpSnappyPdf->getOutput($pageUrl),
-            'cv.pdf'
-        );
+        ]);
     }
 
-    // /**
-    //  * @Route("/print/dompdf", name="cv_print_dompdf")
-    //  */
-    // public function dompdfAction()
-    // {
-    //     /** @var \App\Entity\User $user */
-    //     $user = $this->security->getUser();
-    //     $seeker = $user->getSeeker();
-    //     $cv = $seeker->getCv();
-
-    //     // Configure Dompdf according to your needs
-    //     $pdfOptions = new Options();
-    //     $pdfOptions->set('defaultFont', 'Arial');
+    /**
+     * @Route("/print/pdf", name="cv_print")
+     */
+    public function printAction(FileUploader $fileUploader){
+        /** @var \App\Entity\User $user */
+        $user = $this->security->getUser();
+        $seeker = $user->getSeeker();
+        $cv = $seeker->getCv();
         
-    //     // Instantiate Dompdf with our options
-    //     $dompdf = new Dompdf($pdfOptions);
-        
-    //     // Retrieve the HTML generated in our twig file
-    //     $html = $this->renderView('cv/_preview.html.twig', [
-    //         'cv' => $cv
-    //     ]);
+        $html = $this->renderView('cv/_preview.html.twig', [
+            'title' => "pdf preview",
+            'cv' => $cv
+        ]);
 
-    //     $html .= '<link type="text/css" href="build/app.css" media="print" rel="stylesheet" />';
-        
-    //     // Load HTML to Dompdf
-    //     $dompdf->loadHtml($html, 'UTF-8');
-    //     $dompdf->setBaseHost('localhost');
-    //     // $dompdf->setCss(new Stylesheet($dompdf));
-    //     $dompdf->setBasePath('/var/www/jobshunter/public/build/app.css');
+        file_put_contents(constant('OUTPUT_FILE'), $this->printCV->toPDF_tcpdf($html));
 
-    //     dump($dompdf);
-    //     dump($dompdf->getCss());
-    //     die();
-        
-    //     // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-    //     $dompdf->setPaper('A4', 'portrait');
-
-    //     // Render the HTML as PDF
-    //     $dompdf->render();
-
-    //     // Output the generated PDF to Browser (inline view)
-    //     $dompdf->stream("public/generated/cv.pdf", [
-    //         "Attachment" => false
-    //     ]);
-    // }
+        if ($fileUploader->isFileExists(constant("OUTPUT_FILE"))) {
+            return $this->file(constant("OUTPUT_FILE"), "cv_preview.pdf", ResponseHeaderBag::DISPOSITION_INLINE);
+        }
+        return $this->json(['error' => "CV preview file doesn't exist !"]);
+    }
 }
