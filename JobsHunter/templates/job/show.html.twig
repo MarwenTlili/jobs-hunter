@@ -34,26 +34,38 @@
                 <p>{{ job.postsNumber }}</p>
             </div>
 
-            <div class="type col-md-4 col-lg-2">
-                <label for=""><b>Type d'emploi</b></label>
-                <p>{{ job.type }}</p>
-            </div>
+            {% if job.type %}
+                <div class="type col-md-4 col-lg-2">
+                    <label for=""><b>Type d'emploi</b></label>
+                    <p>{{ job.type }}</p>
+                </div>
+            {% endif %}
 
-            <div class="experienceMin col-md-4 col-lg-2">
-                <label for=""><b>Experice</b></label>
-                <p>de {{ job.experienceMin }} à {{ job.experienceMax }} ans</p>
-            </div>
-        
-            <div class="educationLevel col-md-4 col-lg-2">
-                <label for=""><b>Niveau d'Etude</b></label>
-                <p>{{ job.educationLevel }}</p>
-            </div>
+            {% if job.experienceMin %}
+                <div class="experienceMin col-md-4 col-lg-2">
+                    <label for=""><b>Experice</b></label>
+                    <p>
+                        de {{ job.experienceMin }} 
+                        {% if job.experienceMax %}
+                            à {{ job.experienceMax }} ans
+                        {% endif %}
+                    </p>
+                </div>
+            {% endif %}
 
-            <div class="requiredLanguages col-md-4 col-lg-2">
-                <label for=""><b>Langues</b></label>
-                <p>{{ job.requiredLanguages }}</p>
-            </div>
+            {% if job.educationLevel %}
+                <div class="educationLevel col-md-4 col-lg-2">
+                    <label for=""><b>Niveau d'Etude</b></label>
+                    <p>{{ job.educationLevel }}</p>
+                </div>
+            {% endif %}
 
+            {% if job.requiredLanguages %}
+                <div class="requiredLanguages col-md-4 col-lg-2">
+                    <label for=""><b>Langues</b></label>
+                    <p>{{ job.requiredLanguages }}</p>
+                </div>
+            {% endif %}
         </div>
 
         {% if app.user %}
