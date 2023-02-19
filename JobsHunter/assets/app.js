@@ -14,6 +14,7 @@ require('bootstrap-select');
 // require('Hinclude/hinclude'); /* issu with bootstrap-select */
 require('bootstrap-icons/font/bootstrap-icons.css');
 require('bootstrap-select/dist/css/bootstrap-select.min.css');
+require('trix/dist/trix.css');
 
 // any CSS you import will output into a single css file (app.css in this case)
 // import './styles/app.css';
@@ -34,3 +35,8 @@ require('bs-custom-file-input');
  */
 import bsCustomFileInput from 'bs-custom-file-input'
 bsCustomFileInput.init()
+
+import Trix from "trix"
+document.addEventListener("trix-before-initialize", () => {
+    // Change Trix.config if you need
+  })

@@ -17,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JobType extends AbstractType
 {
+    private $job;
+
     public function __constract(Job $job)
     {
         $this->job = $job;
@@ -29,7 +31,12 @@ class JobType extends AbstractType
             ])
             ->add('address')
             // ->add('createdAt')
-            ->add('expireAt', DateTimeType::class, [
+            // ->add('expireAt', DateTimeType::class, [
+            //     'widget' => 'single_text',
+            //     'input'  => 'datetime_immutable',
+            //     'required' => true
+            // ])
+            ->add('expireAt', DateType::class, [
                 'widget' => 'single_text',
                 'input'  => 'datetime_immutable',
                 'required' => true
@@ -41,10 +48,15 @@ class JobType extends AbstractType
             ->add('educationLevel')
             ->add('requiredLanguages')
             ->add('description', TextareaType::class, [
-                'attr' => ['class' => 'tinymce'],
+                'required' => false,
+                'label' => 'Description d\'emploi',
+                'attr' => ['hidden' => true],
             ])
-            ->add('requirements')
-
+            ->add('requirements', TextareaType::class, [
+                'required' => false,
+                'label' => 'Exigences de l\'emploi',
+                'attr' => ['hidden' => true],
+            ])
             ->add('tags', EntityType::class,[
                 'class' => Tag::class,
                 'attr' => [
