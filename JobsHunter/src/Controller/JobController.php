@@ -98,6 +98,8 @@ class JobController extends AbstractController
      */
     public function edit(Request $request, Job $job): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+        
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
