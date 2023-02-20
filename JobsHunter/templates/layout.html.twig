@@ -61,12 +61,12 @@
                                 {% if app.user.company %}
                                     <a class="dropdown-item" href="{{ path('company_edit', {'slug': app.user.company.slug}) }}">Profile</a>
                                     <a class="dropdown-item" href="{{path('job_new', {'slug': app.user.company.slug})}}">Publier un Offre</a>
-                                    <a class="dropdown-item" href="{{path('company_offers', {'slug': app.user.company.slug})}}">List des Offres</a>
+                                    <a class="dropdown-item" href="{{path('company_offers', {'slug': app.user.company.slug})}}">Nos Offres</a>
                                     <a class="dropdown-item" href="{{path('seeker_index')}}">CVs</a>
                                 {% else %}
                                     <a class="dropdown-item" href="{{ path('company_new') }}">Profile</a>
                                     <a class="dropdown-item disabled" href="#">Publier un Offre</a>
-                                    <a class="dropdown-item disabled" href="#">List des Offres</a>
+                                    <a class="dropdown-item disabled" href="#">Nos Offres</a>
                                     <a class="dropdown-item disabled" href="#">CVs</a>
                                 {% endif %}
 
