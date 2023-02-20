@@ -103,8 +103,7 @@ class JobController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('company_offers', ['slug' => $job->getCompany()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_offers', ['slug' => $job->getCompany()->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('job/edit.html.twig', [
