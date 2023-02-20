@@ -68,8 +68,8 @@
             {% endif %}
         </div>
 
-        {% if app.user %}
-            {% if app.user.seeker %}
+        {% if app.user %} {# if there is a seeker/company logined #}
+            {% if app.user.seeker %} {# if there is a seeker logined #}
                 {% if job not in app.user.seeker.applyedJobs %}
                     <div class="apply_btn ">
                         <a class="btn btn-primary" href="{{ path('seeker_apply_job', { 'job': job.id }) }}">Postuler</a>
@@ -79,20 +79,20 @@
                         <button class="btn btn-success" href="#" data-toggle="tooltip" data-placement="right" title="You already applyed for this job" disabled>Sent</button>
                     </div>
                 {% endif %}
-
-            {% elseif app.user.company %}
+            {% elseif app.user.company %} {# if there is a company logined #}
                 <div class="apply_btn ">
-                    <button class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="right" title="Only seekers can apply for job" disabled>Postuler</button>
+                    <button class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="right" title="Only seekers can apply for job" disabled hidden>Postuler</button>
                 </div>
             {% else %}
                 <div class="apply_btn ">
                     <button class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="right" title="update your profile to apply" disabled>Postuler</button>
                 </div>
             {% endif %}
-                
-        {% else %}
+        {% else %} {# if it's a guest (no one logined) #}
             <div class="apply_btn ">
-                <button class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="right" title="connect as seeker account" disabled>Postuler</button>
+                <span id="popover" class="d-inline-block" data-toggle="popover" data-content="connect as seeker account to apply">
+                    <button class="btn btn-primary" style="pointer-events: none;" type="button" disabled>Postuler</button>
+                </span>
             </div>
         {% endif %}
         
