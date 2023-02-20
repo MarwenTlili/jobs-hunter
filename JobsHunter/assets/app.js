@@ -23,6 +23,7 @@ import './styles/app.scss';
 import './scripts/main.js';
 import './scripts/document.js';
 import './scripts/general-information.js';
+import './scripts/company.js';
 
 // used in GeneralInformation/edit
 require('bs-custom-file-input');
