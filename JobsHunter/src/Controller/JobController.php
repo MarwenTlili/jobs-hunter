@@ -59,13 +59,6 @@ class JobController extends AbstractController
         $job->setCompany($company);
         $job->setCountry($company->getCountry());
 
-        #######################################################################
-        // Test
-        $job->setTitle("Développeur (H/F) PHP / Symfony");
-        $job->setExpireAt(new \DateTimeImmutable());
-        $job->setPostsNumber(2);
-        #######################################################################
-
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
@@ -98,8 +91,13 @@ class JobController extends AbstractController
      */
     public function edit(Request $request, Job $job): Response
     {
+        // deny access if use has no "ROLE_COMPANY" role and trying to edit job
         $this->denyAccessUnlessGranted('ROLE_COMPANY');
-        
+
+        // use Voter to check if the authenticated use is the same as job owner
+        // (Company's User)
+        $this->denyAccessUnlessGranted('edit', $job);
+
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
