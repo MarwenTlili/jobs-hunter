@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Company;
+use App\Entity\User;
 use App\Form\CompanyType;
 use App\Repository\CompanyRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -121,6 +122,23 @@ class CompanyController extends AbstractController
 
         return $this->render('company/offers.html.twig', [
             'jobs' => $jobs,
+        ]);
+    }
+
+    /**
+     * @Route("/{user}/seeker_preview", name="cv_preview_for_company", methods={"GET"})
+     */
+    public function previewForCompany(User $user): Response{
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+        dump($user);
+
+        // /** @var \App\Entity\User $user */
+        // $user = $this->security->getUser();
+        $seeker = $user->getSeeker();
+        $cv = $seeker->getCv();
+
+        return $this->render('cv/preview_for_company.html.twig', [
+            'cv' => $cv
         ]);
     }
 }

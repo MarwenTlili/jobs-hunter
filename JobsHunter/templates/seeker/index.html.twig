@@ -23,7 +23,7 @@
                                     {{ seeker.firstName }} {{ seeker.lastName }}
                                 </h5>
                                 <p class="card-text">{{ seeker.cv.generalInformation.motivation[:80] ~ ' ...' }}</p>
-                                <a href="{{ path('seeker_show', {'id': seeker.id}) }}" class="btn btn-primary">show</a>
+                                <a href="{{ path('cv_preview_for_company', {'user': seeker.getUser.getId}) }}" class="btn btn-primary">show</a>
                             </div>
                         </div>
                     </div>
