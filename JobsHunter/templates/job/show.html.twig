@@ -8,62 +8,92 @@
             {{ message }}
         </div>
     {% endfor %}
-    <div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-lg-6 ">
+                <div class="title">
+                    <h3>{{ job.title }}</h3>
+                </div>
+                {% if app.user is same as job.getCompany.getUser %}
+                    <div class="actions d-inline-flex">
+                        <a class="btn btn-warning btn-sm mr-1" 
+                            href="{{ path('job_edit', {'slug': job.slug}) }}">Edit</a>
+                        {{ include('job/_delete_form.html.twig') }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="company">
+                    <i class="bi bi-building" ></i> {{ job.company.name }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="address">
+                    <i class="bi bi-geo-alt" ></i> {{ job.company.address }}
+                </div>
+            </div>
+        </div>
     
-        <div class="title">
-            <h3>{{ job.title }}</h3>
+        <div class="row">
+            <div class="col">
+                <div class="createdAt">
+                    <i class="bi bi-calendar-date" ></i> {{ job.createdAt ? job.createdAt|date('d-m-Y') : '' }}
+                </div>
+            </div>
         </div>
 
-         <div class="company">
-            <i class="bi bi-building" ></i> {{ job.company.name }}
-        </div>
-
-    
-        <div class="address">
-            <i class="bi bi-geo-alt" ></i> {{ job.address }}
-        </div>
-
-    
-        <div class="createdAt">
-            {{ job.createdAt ? job.createdAt|date('d-m-Y') : '' }}
-        </div>
-
-        <div class="row ">
+        <div class="row">
             <div class="postsNumber col-md-4 col-lg-2">
-                <label for=""><b>Nombre de postes</b></label>
-                <p>{{ job.postsNumber }}</p>
+                <div class="col">
+                    <b class="row">Nombre de postes</b>
+                    <label class="row">{{ job.postsNumber }}</label>
+                </div>
             </div>
 
             {% if job.type %}
                 <div class="type col-md-4 col-lg-2">
-                    <label for=""><b>Type d'emploi</b></label>
-                    <p>{{ job.type }}</p>
+                    <div class="col">
+                        <b class="row">Type d'emploi</b>
+                        <label class="row">{{ job.type }}</label>
+                    </div>
                 </div>
             {% endif %}
 
-            {% if job.experienceMin %}
+            {% if job.experienceMin is not null %}
                 <div class="experienceMin col-md-4 col-lg-2">
-                    <label for=""><b>Experice</b></label>
-                    <p>
-                        de {{ job.experienceMin }} 
-                        {% if job.experienceMax %}
-                            à {{ job.experienceMax }} ans
-                        {% endif %}
-                    </p>
+                    <div class="col">
+                        <b class="row">Experience</b>
+                        <label class="row">
+                            de {{ job.experienceMin }} 
+                            {% if job.experienceMax %}
+                                à {{ job.experienceMax }} ans
+                            {% endif %}
+                        </label>
+                    </div>
                 </div>
             {% endif %}
 
             {% if job.educationLevel %}
                 <div class="educationLevel col-md-4 col-lg-2">
-                    <label for=""><b>Niveau d'Etude</b></label>
-                    <p>{{ job.educationLevel }}</p>
+                    <div class="col">
+                        <b class="row">Niveau d'Etude</b>
+                        <label class="row">{{ job.educationLevel }}</label>
+                    </div>
                 </div>
             {% endif %}
 
             {% if job.requiredLanguages %}
                 <div class="requiredLanguages col-md-4 col-lg-2">
-                    <label for=""><b>Langues</b></label>
-                    <p>{{ job.requiredLanguages }}</p>
+                    <div class="col">
+                        <b class="row">Langues</b>
+                        <label class="row">{{ job.requiredLanguages }}</label>
+                    </div>
                 </div>
             {% endif %}
         </div>
@@ -102,18 +132,18 @@
 
         <div class="description">
             <b>Description</b>
-            <p class="text-muted">{{ job.description }}</p>
+            <p class="text-muted text-justify">{{ job.description | raw}}</label>
         </div>
     
         <div class="requirements">
             <b>Requirements</b>
-            <p class="text-muted">{{ job.requirements }}</p>
+            <p class="text-muted">{{ job.requirements | raw }}</label>
         </div>
 
     
         <div class="expireAt">
             <b>Date d'expiration</b>
-            <p>{{ job.expireAt ? job.expireAt|date('d-m-Y') : '' }}</p>
+            <label>{{ job.expireAt ? job.expireAt|date('d-m-Y') : '' }}</label>
         </div>
 
     </div>
