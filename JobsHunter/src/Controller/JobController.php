@@ -135,4 +135,18 @@ class JobController extends AbstractController
             'jobs' => $jobRepository->getLastJobs($max)
         ]);
     }
+
+    /**
+     * @Route("/{slug}/seekers", name="seekers_show", methods={"GET"})
+     */
+    public function list(Job $job): Response{
+        // use Voter to check if the authenticated use is the same as job owner
+        // (Company's User)
+        $this->denyAccessUnlessGranted('view', $job);
+
+        $seekers = $job->getSeekersApplyed();
+        return $this->render('seeker/index.html.twig', [
+            'seekers' => $seekers,
+        ]);
+    }
 }

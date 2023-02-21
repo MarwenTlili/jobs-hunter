@@ -126,10 +126,6 @@ class SeekerController extends AbstractController
 
         /** @var \App\Entity\Seeker $seeker */
         $seeker = $user->getSeeker();
-        dump($seeker);
-
-        // /** @var \App\Entity\Job $job */
-        dump($job);
 
         $seeker->addApplyedJob($job);
         $manager = $this->getDoctrine()->getManager();
@@ -144,16 +140,5 @@ class SeekerController extends AbstractController
         return $this->redirectToRoute('job_show', [
             'slug' => $job->getSlug()
         ], Response::HTTP_SEE_OTHER);
-    }
-
-    /**
-     * @Route("/list/{slug}", name="seekers_show", methods={"GET"})
-     */
-    public function list(Job $job): Response
-    {
-        $seekers = $job->getSeekersApplyed();
-        return $this->render('seeker/index.html.twig', [
-            'seekers' => $seekers,
-        ]);
     }
 }
