@@ -29,7 +29,11 @@
             </div>
             {% if cv.generalInformation %}
                 <div class="photo col-4">
-                    <img class="rounded-circle" src="{{ asset('uploads/brochures/' ~ cv.generalInformation.photo) }}" width="120" height="120">
+                    {% if cv.generalInformation.photo %}
+                        <img class="rounded-circle" src="{{ asset('uploads/brochures/' ~ cv.generalInformation.photo) }}" width="120" height="120">
+                    {% else %}
+                        <img class="rounded-circle" src="https://via.placeholder.com/120" width="120" height="120">
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
