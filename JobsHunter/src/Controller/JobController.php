@@ -94,7 +94,7 @@ class JobController extends AbstractController
         // deny access if use has no "ROLE_COMPANY" role and trying to edit job
         $this->denyAccessUnlessGranted('ROLE_COMPANY');
 
-        // use Voter to check if the authenticated use is the same as job owner
+        // use Voter to check if the authenticated user is the same as job owner
         // (Company's User)
         $this->denyAccessUnlessGranted('edit', $job);
 
@@ -140,7 +140,7 @@ class JobController extends AbstractController
      * @Route("/{slug}/seekers", name="seekers_show", methods={"GET"})
      */
     public function list(Job $job): Response{
-        // use Voter to check if the authenticated use is the same as job owner
+        // use Voter to check if the authenticated user is the same as job owner
         // (Company's User)
         $this->denyAccessUnlessGranted('view', $job);
 
