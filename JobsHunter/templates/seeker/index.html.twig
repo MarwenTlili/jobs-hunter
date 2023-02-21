@@ -9,14 +9,38 @@
         </div>
 
         {% for seeker in seekers %}
-            <div class="seeker">
-                <div class="row">
-                    {{ seeker.firstName }} {{ seeker.lastName }}
-                </div>
-                <div class="civility">{{ seeker.civility }}</div>
-                <div class="birthDate">{{ seeker.birthDate ? seeker.birthDate|date('Y-m-d') : '' }}</div>
-                
-                <div class="link"><a href="{{ path('seeker_show', {'id': seeker.id}) }}">show</a></div>
+            <div class="row d-inline-flex">
+                {% if seeker.cv %} {# if seeker has a CV #}
+                    <div class="col">
+                        <div id="seeker_card" class="card mb-4" style="width: 15rem;">
+                            {% if seeker.cv.generalInformation.photo %}
+                                <img src="{{ asset('uploads/brochures/' ~ seeker.cv.generalInformation.photo) }}" class="card-img-top" alt="...">
+                            {% else %}
+                                <img src="https://via.placeholder.com/120" class="card-img-top" alt="..." style="max-width:120px;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ seeker.firstName }} {{ seeker.lastName }}
+                                </h5>
+                                <p class="card-text">{{ seeker.cv.generalInformation.motivation[:80] ~ ' ...' }}</p>
+                                <a href="{{ path('seeker_show', {'id': seeker.id}) }}" class="btn btn-primary">show</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col">
+                        <div id="seeker_card" class="card mb-4" style="width: 15rem;">
+                            <img src="https://via.placeholder.com/120" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ seeker.firstName }} {{ seeker.lastName }}
+                                </h5>
+                                <p class="card-text">...</p>
+                                <a href="{{ path('seeker_show', {'id': seeker.id}) }}" class="btn btn-primary">show</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         {% else %}
             no records found
