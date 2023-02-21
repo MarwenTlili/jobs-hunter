@@ -26,7 +26,7 @@ class EducationController extends AbstractController
             return $this->redirectToRoute('education_new', [], Response::HTTP_SEE_OTHER);
         }else{
             return $this->render('education/index.html.twig', [
-                'educations' => $educationRepository->findAll(),
+                'educations' => $educationRepository->findBy(['cv' => $seeker->getCv()]),
             ]);
         }
     }
