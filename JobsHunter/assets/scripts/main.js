@@ -10,17 +10,21 @@ $(function() {
     };
 
     function scrollFunction() {
-        if (
-            document.body.scrollTop > 20 ||
-            document.documentElement.scrollTop > 20
-        ) {
-            scrollup.style.display = "block";
-        } else {
-            scrollup.style.display = "none";
+        if (scrollup) {
+            if (
+                document.body.scrollTop > 20 ||
+                document.documentElement.scrollTop > 20
+            ) {
+                scrollup.style.display = "block";
+            } else {
+                scrollup.style.display = "none";
+            }
         }
     }
-    // When the user clicks on the button, scroll to the top of the document
-    scrollup.addEventListener("click", backToTop);
+    if (scrollup) {
+        // When the user clicks on the button, scroll to the top of the document
+        scrollup.addEventListener("click", backToTop);
+    }
 
     function backToTop() {
         document.body.scrollTop = 0;
