@@ -26,7 +26,7 @@ class ExperienceController extends AbstractController
             return $this->redirectToRoute('experience_new', [], Response::HTTP_SEE_OTHER);
         }else{
             return $this->render('experience/index.html.twig', [
-                'experiences' => $experienceRepository->findAll(),
+                'experiences' => $experienceRepository->findBy(['cv' => $seeker->getCv()]),
             ]);
         }
     }
