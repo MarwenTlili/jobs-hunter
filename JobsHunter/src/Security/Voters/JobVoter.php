@@ -57,6 +57,7 @@ class JobVoter extends Voter {
         // other use case:
         // the Job object could have, for example, a method `isPrivate()`
         // return !$job->isPrivate();
+        return false;
     }
 
     private function canEdit(Job $job, User $user): bool{
