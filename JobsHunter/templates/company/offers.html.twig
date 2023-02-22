@@ -4,52 +4,55 @@
 
 {% block body %}
 
-    <div class="container-fluid">
+    <div class="container">
 
-        <h1>Offres</h1>
-        <a href="{{path('job_new', {'slug': app.user.company.slug})}}">Publier une annonce</a>
-        <hr>
+        <div class="row">
+            <h1>{{ app.user.company }} Offres</h1>
+        </div>
+
+        <div class="row">
+            <a href="{{path('job_new', {'slug': app.user.company.slug})}}">publier une annonce</a>
+            <hr>
+        </div>
+
         {% for job in jobs %}
-            <div class="job">
-                <di class="title">
-                    <a href="{{ path('job_show', {'slug': job.slug}) }}"> <h3>{{ job.title }}</h3></a>
+            <div class="row">
+                <div class="job">
+                    <div class="title">
+                        <a href="{{ path('job_show', {'slug': job.slug}) }}"> <h3>{{ job.title }}</h3></a>
+                    </div>
+
+                    <div class="createdAt">
+                        <b>Created At</b>
+                        {{ job.createdAt ? job.createdAt|date('d-m-Y') : '' }}
+                    </div>
+
+                    <div class="info">
+                        there is 
+                        <a class="btn-link {{ (job.seekersApplyed | length > 0) ? '': 'disabled'}}" href="{{ path('seekers_show', {'slug': job.slug}) }}" >
+                            <b>{{ job.seekersApplyed | length }}</b>
+                        </a> 
+                        seekers applied for this job
+                    </div>
+
+                    <div class="address">
+                        <b>Address</b>
+                        {{ job.address }}
+                    </div>
+
+                    <a class="btn btn-info" href="{{ path('job_show', {'slug': job.slug}) }}">show</a>
+
+                    <a class="btn btn-warning" href="{{ path('job_edit', {'slug': job.slug}) }}">edit</a>
                 </div>
-
-                <div class="createdAt">
-                    <b>Created At</b>
-                    {{ job.createdAt ? job.createdAt|date('d-m-Y') : '' }}
-                </div>
-
-                <div class="info">
-                    there is 
-                    <a class="btn-link {{ (job.seekersApplyed | length > 0) ? '': 'disabled'}}" href="{{ path('seekers_show', {'slug': job.slug}) }}" >
-                        <b>{{ job.seekersApplyed | length }}</b>
-                    </a> 
-                    seekers applied for this job
-                </div>
-
-                <div class="address">
-                    <b>Address</b>
-                    {{ job.address }}
-                </div>
-
-                <div class="description">
-                    <b>Description</b>
-                    <div class="text-muted">{{ job.description[:120] ~ '...'}}</div>
-                </div>
-
-                <a class="btn btn-info" href="{{ path('job_show', {'slug': job.slug}) }}">show</a>
-
-                <a class="btn btn-warning" href="{{ path('job_edit', {'slug': job.slug}) }}">edit</a>
-
-            </div><hr>
+                <hr>
+            </div>
         {% else %}
             <div>
                 <p>no records found</p>
             </div>
         {% endfor %}
 
-        <div class="navigation">
+        <div class="row justify-content-center">
             {{ knp_pagination_render(jobs, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig')}}
         </div>
 

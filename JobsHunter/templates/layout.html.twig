@@ -59,10 +59,10 @@
                             {% if is_granted('ROLE_COMPANY') %}
 
                                 {% if app.user.company %}
-                                    <a class="dropdown-item" href="{{ path('company_edit', {'slug': app.user.company.slug}) }}">Profile</a>
-                                    <a class="dropdown-item" href="{{path('job_new', {'slug': app.user.company.slug})}}">Publier un Offre</a>
-                                    <a class="dropdown-item" href="{{path('company_offers', {'slug': app.user.company.slug})}}">Nos Offres</a>
-                                    <a class="dropdown-item" href="{{path('seeker_index')}}">CVs</a>
+                                    <a class="dropdown-item" href="{{ path('company_edit') }}">Profile</a>
+                                    <a class="dropdown-item" href="{{ path('job_new') }}">Publier un Offre</a>
+                                    <a class="dropdown-item" href="{{ path('company_offers') }}">Nos Offres</a>
+                                    <a class="dropdown-item" href="{{ path('seeker_index') }}">CVs</a>
                                 {% else %}
                                     <a class="dropdown-item" href="{{ path('company_new') }}">Profile</a>
                                     <a class="dropdown-item disabled" href="#">Publier un Offre</a>
@@ -186,7 +186,7 @@
                         
                             {% if is_granted('ROLE_COMPANY') %}
                                 {% if app.user.company %}
-                                    <p><a href="{{ path('job_new', {'slug': app.user.company}) }}" class="text-reset">Publier une annonce</a></p>
+                                    <p><a href="{{ path('job_new') }}" class="text-reset">Publier une annonce</a></p>
                                     <p><a href="{{path('seeker_index')}} " class="text-reset">Trouver un CV</a></p>
                                 {% else %}
                                     <p><a href="#" class="text-reset disabled">Publier une annonce</a></p>
