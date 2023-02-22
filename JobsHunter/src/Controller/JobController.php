@@ -12,12 +12,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/job")
  */
 class JobController extends AbstractController
 {
+    private $security;
+
+    public function __construct(Security $security){
+        $this->security = $security;
+    }
+
     /**
      * @Route("/", name="job_index", methods={"GET", "GET"})
      */
@@ -51,10 +58,18 @@ class JobController extends AbstractController
     }
 
     /**
-     * @Route("/new/{slug}", name="job_new", methods={"GET","POST"})
+     * @Route("/new", name="job_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Company $company): Response
+    public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+
+        /** @var \App\Entity\User $user */
+        $user = $this->security->getUser();
+
+        /** @var \App\Entity\Company $company */
+        $company = $user->getcompany();
+
         $job = new Job();
         $job->setCompany($company);
         $job->setCountry($company->getCountry());
@@ -67,7 +82,7 @@ class JobController extends AbstractController
             $entityManager->persist($job);
             $entityManager->flush();
 
-            return $this->redirectToRoute('job_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_offers', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('job/new.html.twig', [
@@ -117,6 +132,10 @@ class JobController extends AbstractController
      */
     public function delete(Request $request, Job $job): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+
+        $this->denyAccessUnlessGranted('edit', $job);
+
         if ($this->isCsrfTokenValid('delete'.$job->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($job);

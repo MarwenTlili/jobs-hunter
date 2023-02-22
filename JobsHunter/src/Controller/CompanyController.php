@@ -11,12 +11,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/company")
  */
 class CompanyController extends AbstractController
 {
+    private $security;
+
+    public function __construct(Security $security){
+        $this->security = $security;
+    }
+    
     /**
      * @Route("/", name="company_index", methods={"GET", "POST"})
      */
@@ -72,19 +79,26 @@ class CompanyController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/edit", name="company_edit", methods={"GET","POST"})
+     * @Route("/profile/edit", name="company_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Company $company): Response
+    public function edit(Request $request): Response
     {
+        // deny access if use has no "ROLE_COMPANY" role and trying to edit job
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+
+        /** @var \App\Entity\User $user */
+        $user = $this->security->getUser();
+
+        /** @var \App\Entity\Company $company */
+        $company = $user->getcompany();
+
         $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('company_edit', [
-                'slug' => $company->getSlug()
-            ], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('company_edit', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('company/edit.html.twig', [
@@ -108,10 +122,19 @@ class CompanyController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/offers", name="company_offers")
+     * @Route("/offers/list", name="company_offers")
      */
-    public function offers(Request $request, PaginatorInterface $paginator, Company $company): Response
+    public function offers(Request $request, PaginatorInterface $paginator): Response
     {
+        // deny access if use has no "ROLE_COMPANY" role and trying to edit job
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+
+        /** @var \App\Entity\User $user */
+        $user = $this->security->getUser();
+
+        /** @var \App\Entity\Company $company */
+        $company = $user->getcompany();
+
         $items = $company->getJobs();
         
         $jobs = $paginator->paginate(
