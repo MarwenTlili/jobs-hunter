@@ -77,7 +77,8 @@ class JobType extends AbstractType
             ->add('professions', EntityType::class,[
                 'class' => Profession::class,
                 'attr' => [
-                    'class' => 'selectpicker', 'data-live-search' => 'true'
+                    'class' => 'selectpicker', 'data-live-search' => 'true',
+                    'data-max-options' => 3
                 ],
                 'multiple' => true,
                 'required' => false,
