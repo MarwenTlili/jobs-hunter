@@ -43,6 +43,7 @@ class UserFixtures extends Fixture{
         ->setUsername("user")
         ->setRoles(["ROLE_USER"])
         ->setPassword($this->passwordEncoder->encodePassword($user, 'user'))
+        ->setIsVerified(true)
         ->setCreatedAt(new \DateTimeImmutable());
 
         $admin = new User();
@@ -50,6 +51,7 @@ class UserFixtures extends Fixture{
         ->setUsername("admin")
         ->setRoles(["ROLE_ADMIN"])
         ->setPassword($this->passwordEncoder->encodePassword($admin, "admin"))
+        ->setIsVerified(true)
         ->setCreatedAt(new \DateTimeImmutable());
 
         ////////////////////////////////////////////////////////////////////////////////
