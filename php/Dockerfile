@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.2-fpm
 
 ENV DEBIAN_FRONTEND="noninteractive"
 
@@ -26,11 +26,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 
-# RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
-# RUN mv /usr/bin/symfony /usr/local/bin/symfony
-
-WORKDIR /var/www/jobshunter
-# RUN chown -R www-data:$(whoami) public/
+# RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
 RUN git config --global user.email "marwentlili@gmail.com" \ 
     && git config --global user.name "marwentlili" \
