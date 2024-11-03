@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
+    <div class="container p-2 p-md-4">
         <div class="cv">
         <div class="row">
             <div class="col-8">
@@ -30,9 +30,9 @@
             {% if cv.generalInformation %}
                 <div class="photo col-4">
                     {% if cv.generalInformation.photo %}
-                        <img class="rounded-circle" src="{{ asset('uploads/brochures/' ~ cv.generalInformation.photo) }}" width="120" height="120">
+                        <img class="rounded-circle" src="{{ asset('uploads/brochures/' ~ cv.generalInformation.photo) }}" width="100" height="100">
                     {% else %}
-                        <img class="rounded-circle" src="https://via.placeholder.com/120" width="120" height="120">
+                        <img class="rounded-circle" src="https://via.placeholder.com/120" width="100" height="100">
                     {% endif %}
                 </div>
             {% endif %}
@@ -76,7 +76,7 @@
                         {{ experience.jobTitle }}
                     </div>
                     <div class="description text-muted text-justify">
-                        {{ experience.description }}
+                        {{ experience.description | raw }}
                     </div>
                     {% if experience.yearsOfExperience %}
                         <div class="yearsOfExperience">

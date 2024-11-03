@@ -37,7 +37,7 @@
                                     {# {{experience.current}} #}
                                 {% endif %}
                             </h5>
-                            <p class="card-text">{{experience.description}}</p>
+                            <p class="card-text">{{experience.description | raw}}</p>
                             <a href="{{ path('experience_edit', {'id': experience.id}) }}">Modifier</a>
                         </div>
                     </div>

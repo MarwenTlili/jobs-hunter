@@ -170,11 +170,11 @@ class CVController extends AbstractController{
             'cv' => $cv
         ]);
 
-        file_put_contents(constant('OUTPUT_FILE'), $this->printCV->toPDF_tcpdf($html));
+        // file_put_contents(constant('OUTPUT_FILE'), $this->printCV->toPDF_tcpdf($html));
 
-        if ($fileUploader->isFileExists(constant("OUTPUT_FILE"))) {
-            return $this->file(constant("OUTPUT_FILE"), "cv_preview.pdf", ResponseHeaderBag::DISPOSITION_INLINE);
-        }
+        // if ($fileUploader->isFileExists(constant("OUTPUT_FILE"))) {
+        //     return $this->file(constant("OUTPUT_FILE"), "cv_preview.pdf", ResponseHeaderBag::DISPOSITION_INLINE);
+        // }
         return $this->json(['error' => "CV preview file doesn't exist !"]);
     }
 }
