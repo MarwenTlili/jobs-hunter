@@ -1,5 +1,6 @@
 const Encore = require('@symfony/webpack-encore');
 const CopyPlugin = require('copy-webpack-plugin');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -31,6 +32,22 @@ Encore
             { from: './node_modules/tinymce/skins', to: 'skins' },
         ]
     }))
+
+    .addPlugin(new BrowserSyncPlugin(
+        {
+            host: 'localhost',
+            port: 3000,
+            proxy: 'http://127.0.0.1:8000', // Your Symfony server URL
+            files: [
+                'templates/**/*.twig',
+                'public/build/**/*.js',
+                'public/build/**/*.css'
+            ],
+            notify: false,
+            open: false
+        },
+        { reload: true }
+    ))
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
