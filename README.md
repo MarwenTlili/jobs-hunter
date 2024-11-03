@@ -63,3 +63,13 @@ to check port you can use:
 ```bash
 docker ps 
 ```
+
+## Using Webpack Encore HMR - For Development
+```bash
+# From host
+# Terminal 1
+symfony server:start --no-tls
+
+# Terminal 2
+npm run watch
+```
