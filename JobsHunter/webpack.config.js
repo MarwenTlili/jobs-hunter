@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const CopyPlugin = require('copy-webpack-plugin');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -21,6 +22,15 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+
+    // Add TinyMCE to your assets
+    .addEntry('tinymce', './assets/scripts/tinymce.js')
+    // Copy TinyMCE skins and themes to the public directory
+    .addPlugin(new CopyPlugin({
+        patterns: [
+            { from: './node_modules/tinymce/skins', to: 'skins' },
+        ]
+    }))
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -74,6 +84,6 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
-;
+    ;
 
 module.exports = Encore.getWebpackConfig();
