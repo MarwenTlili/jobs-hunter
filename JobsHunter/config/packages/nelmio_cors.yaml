@@ -1,0 +1,14 @@
+nelmio_cors:
+    defaults:
+        origin_regex: true
+        allow_origin: ["%env(CORS_ALLOW_ORIGIN)%"] # CORS_ALLOW_ORIGIN set in .env
+        allow_methods: ["GET", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"]
+        allow_headers: ["Content-Type", "Authorization"]
+        expose_headers: ["Link"]
+        max_age: 3600
+    paths:
+        "^/": # Apply to all routes, including _wdt
+            allow_origin: ["%env(CORS_ALLOW_ORIGIN)%"]
+            allow_headers: ["Content-Type", "Authorization", "X-Requested-With"]
+            allow_methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE"]
+            max_age: 3600
