@@ -1,50 +1,67 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Experience index{% endblock %}
+{% block title %}Experience index
+{% endblock %}
 
 {% block body %}
 
-    <div class="container-fluid">
+	<div class="container-fluid">
+		<div class="row d-flex justify-content-center align-items-center">
+			<h5>Vos Expériences</h5>
+			<button id="toggle_button" class="btn btn-sm d-block d-md-none">
+				<span class="navicon">
+					<i class="bi bi-arrows-fullscreen"></i>
+				</span>
+			</button>
+		</div>
 
-        <div class="row d-flex justify-content-center align-items-center">
-            <h5>Experience index</h5>
-            <button id="toggle_button" class="btn btn-sm d-block d-md-none">
-                <span class="navicon"><i class="bi bi-arrows-fullscreen"></i></span>
-            </button>
-        </div>
+		<div class="row">
+			<div id="sidebar" class="col-md-4 d-md-block p-3 mb-5">
+				{{ include('cv/_sidebar.html.twig') }}
+			</div>
+			<div class="col-md-7">
+				<div class="d-flex justify-content-between align-items-center mb-2">
+					<a href="{{ path('experience_new') }}" class="btn btn-primary mb-0" data-toggle="tooltip" data-placement="right" title="Ajouter une experience">
+						Ajouter
+					</a>
+					<mark>experiences: {{ experiences|length }}</mark>
+				</div>
+				{% for experience in experiences %}
+					<div class="card mb-4">
+						<div class="card-header d-flex justify-content-between align-items-center">
+							<h5 class="mb-0">{{experience.jobTitle}}</h5>
+							{% include "experience/_delete_form.html.twig" with {'id': experience.id} %}
+						</div>
 
-        <div class="row">
-            <div id="sidebar" class="col-md-4 d-md-block p-3 mb-5">
-                {{ include('cv/_sidebar.html.twig') }}
-            </div>
-            <div class="col-md-7">
-                <a href="{{ path('experience_new') }}">Ajouter</a>
-                {% for experience in experiences %}
-                    <div class="card">
-                        <h5 class="card-header">
-                            {{experience.jobTitle}}
-                        </h5>
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                {{experience.company}}
-                            </h5>
-                            <h5>
-                                de:{{experience.startAt | date('d-m-Y')}}
-                                {% if not experience.current %}
-                                    à:{{experience.endAt | date('d-m-Y')}}
-                                {% else %}
-                                    en cours...
-                                    {# {{experience.current}} #}
-                                {% endif %}
-                            </h5>
-                            <p class="card-text">{{experience.description | raw}}</p>
-                            <a href="{{ path('experience_edit', {'id': experience.id}) }}">Modifier</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        
-    </div>
-    
+						<div class="card-body">
+							<h5 class="card-title">
+								{{experience.company}}
+							</h5>
+							<h5>
+								de:
+								<span class="text-muted">{{experience.startAt | date('d-m-Y')}}</span>
+								{% if not experience.current %}
+									à:
+									<span class="text-muted">{{experience.endAt | date('d-m-Y')}}</span>
+								{% else %}
+									en cours ...
+								{% endif %}
+							</h5>
+							<h5>Niveau d'experience:
+								{% if experience.experienceLevel in experienceLevels|keys %}
+									<span class="text-muted">{{ experienceLevels[experience.experienceLevel] }}</span>
+								{% else %}
+									<span class="text-muted">Unknown</span>
+								{% endif %}
+							</h5>
+							<p class="card-text">{{experience.description | raw}}</p>
+							<a href="{{ path('experience_edit', {'id': experience.id}) }}" class="btn btn-warning">Modifier</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+	</div>
+
 {% endblock %}
