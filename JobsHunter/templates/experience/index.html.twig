@@ -24,7 +24,8 @@
 					<a href="{{ path('experience_new') }}" class="btn btn-primary mb-0" data-toggle="tooltip" data-placement="right" title="Ajouter une experience">
 						Ajouter
 					</a>
-					<mark>experiences: {{ experiences|length }}</mark>
+					<mark>experiences:
+						{{ experiences|length }}</mark>
 				</div>
 				{% for experience in experiences %}
 					<div class="card mb-4">
@@ -44,7 +45,9 @@
 									à:
 									<span class="text-muted">{{experience.endAt | date('d-m-Y')}}</span>
 								{% else %}
-									en cours ...
+									<div class="endAt ml-4">
+										en cours ...
+									</div>
 								{% endif %}
 							</h5>
 							<h5>Niveau d'experience:
