@@ -13,20 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/experience")
  */
-class ExperienceController extends AbstractController
-{
+class ExperienceController extends AbstractController {
     /**
      * @Route("/", name="experience_index", methods={"GET"})
      */
-    public function index(ExperienceRepository $experienceRepository): Response
-    {
-        $seeker = $this->getUser()->getSeeker();
-        
+    public function index(ExperienceRepository $experienceRepository): Response {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_homepage');
+        }
+
+        $seeker = $user->getSeeker();
         if ($seeker->getCv()->getExperiences()->isEmpty()) {
             return $this->redirectToRoute('experience_new', [], Response::HTTP_SEE_OTHER);
-        }else{
+        } else {
             return $this->render('experience/index.html.twig', [
                 'experiences' => $experienceRepository->findBy(['cv' => $seeker->getCv()]),
+                'experienceLevels' => Experience::EXPERIENCE_LEVELS
             ]);
         }
     }
@@ -34,8 +37,7 @@ class ExperienceController extends AbstractController
     /**
      * @Route("/new", name="experience_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
-    {
+    public function new(Request $request): Response {
         $experience = new Experience();
         $form = $this->createForm(ExperienceType::class, $experience);
         $form->handleRequest($request);
@@ -62,8 +64,7 @@ class ExperienceController extends AbstractController
     /**
      * @Route("/{id}", name="experience_show", methods={"GET"})
      */
-    public function show(Experience $experience): Response
-    {
+    public function show(Experience $experience): Response {
         return $this->render('experience/show.html.twig', [
             'experience' => $experience,
         ]);
@@ -72,8 +73,7 @@ class ExperienceController extends AbstractController
     /**
      * @Route("/{id}/edit", name="experience_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Experience $experience): Response
-    {
+    public function edit(Request $request, Experience $experience): Response {
         $form = $this->createForm(ExperienceType::class, $experience);
         $form->handleRequest($request);
 
@@ -90,11 +90,10 @@ class ExperienceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="experience_delete", methods={"POST"})
+     * @Route("/{id}/delete", name="experience_delete", methods={"POST"})
      */
-    public function delete(Request $request, Experience $experience): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$experience->getId(), $request->request->get('_token'))) {
+    public function delete(Request $request, Experience $experience): Response {
+        if ($this->isCsrfTokenValid('delete' . $experience->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($experience);
             $entityManager->flush();
