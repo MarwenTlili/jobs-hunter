@@ -17,20 +17,19 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 /**
  * @Route("/cv")
  */
-class CVController extends AbstractController{
+class CVController extends AbstractController {
     private $security;
     private $printCV;
 
-    public function __construct(Security $security, PrintCV $printCV){
+    public function __construct(Security $security, PrintCV $printCV) {
         $this->security = $security;
         $this->printCV = $printCV;
     }
-    
+
     /**
      * @Route("/", name="cv_index", methods={"GET", "POST"})
      */
-    public function index(CVRepository $cVRepository): Response
-    {
+    public function index(CVRepository $cVRepository): Response {
         $this->denyAccessUnlessGranted('ROLE_SEEKER');
 
         /** @var \App\Entity\User $user */
@@ -44,12 +43,12 @@ class CVController extends AbstractController{
             $entityManager->persist($cv);
             $entityManager->persist($seeker);
             $entityManager->flush();
-        }else{
+        } else {
             return $this->redirectToRoute('cv_edit', [
                 'id' => $seeker->getCv()->getId()
             ], Response::HTTP_SEE_OTHER);
         }
-        
+
         return $this->render('cv/index.html.twig', [
             'cvs' => $cVRepository->findAll(),
         ]);
@@ -58,8 +57,7 @@ class CVController extends AbstractController{
     /**
      * @Route("/new", name="cv_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
-    {
+    public function new(Request $request): Response {
         $cV = new CV();
         $form = $this->createForm(CVType::class, $cV);
         $form->handleRequest($request);
@@ -81,8 +79,7 @@ class CVController extends AbstractController{
     /**
      * @Route("/{id}", name="cv_show", methods={"GET"})
      */
-    public function show(CV $cV): Response
-    {
+    public function show(CV $cV): Response {
         return $this->render('cv/show.html.twig', [
             'cv' => $cV,
         ]);
@@ -91,12 +88,9 @@ class CVController extends AbstractController{
     /**
      * @Route("/{id}/edit", name="cv_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, CV $cV): Response
-    {
+    public function edit(Request $request, CV $cV): Response {
         $form = $this->createForm(CVType::class, $cV);
         $form->handleRequest($request);
-
-        dump($cV);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
@@ -113,9 +107,8 @@ class CVController extends AbstractController{
     /**
      * @Route("/{id}", name="cv_delete", methods={"POST"})
      */
-    public function delete(Request $request, CV $cV): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$cV->getId(), $request->request->get('_token'))) {
+    public function delete(Request $request, CV $cV): Response {
+        if ($this->isCsrfTokenValid('delete' . $cV->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($cV);
             $entityManager->flush();
@@ -127,7 +120,7 @@ class CVController extends AbstractController{
     /**
      * @Route("/{user}/preview", name="cv_preview", methods={"GET"})
      */
-    public function preview(): Response{
+    public function preview(): Response {
         $this->denyAccessUnlessGranted('ROLE_SEEKER');
 
         /** @var \App\Entity\User $user */
@@ -143,7 +136,7 @@ class CVController extends AbstractController{
     /**
      * @Route("/{user}/_preview", name="cv_preview_template", methods={"GET"})
      */
-    public function previewTemplate(){
+    public function previewTemplate() {
         $this->denyAccessUnlessGranted('ROLE_SEEKER');
 
         /** @var \App\Entity\User $user */
@@ -159,22 +152,22 @@ class CVController extends AbstractController{
     /**
      * @Route("/print/pdf", name="cv_print")
      */
-    public function printAction(FileUploader $fileUploader){
+    public function printAction(FileUploader $fileUploader) {
         /** @var \App\Entity\User $user */
         $user = $this->security->getUser();
         $seeker = $user->getSeeker();
         $cv = $seeker->getCv();
-        
+
         $html = $this->renderView('cv/_preview.html.twig', [
             'title' => "pdf preview",
             'cv' => $cv
         ]);
 
-        // file_put_contents(constant('OUTPUT_FILE'), $this->printCV->toPDF_tcpdf($html));
+        file_put_contents(constant('OUTPUT_FILE'), $this->printCV->toPDF_tcpdf($html));
 
-        // if ($fileUploader->isFileExists(constant("OUTPUT_FILE"))) {
-        //     return $this->file(constant("OUTPUT_FILE"), "cv_preview.pdf", ResponseHeaderBag::DISPOSITION_INLINE);
-        // }
+        if ($fileUploader->isFileExists(constant("OUTPUT_FILE"))) {
+            return $this->file(constant("OUTPUT_FILE"), "cv_preview.pdf", ResponseHeaderBag::DISPOSITION_INLINE);
+        }
         return $this->json(['error' => "CV preview file doesn't exist !"]);
     }
 }
