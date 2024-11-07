@@ -1,114 +1,102 @@
 {% extends 'layout.html.twig' %}
 
 {% block title %}
-	Contact
+  Contact
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<h3 class="m-4 d-flex justify-content-center">Contactez-Nous</h3>
-	</div>
+  <div class="container">
+    <h3 class="m-4 d-flex justify-content-center">Contactez-Nous</h3>
+  </div>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 mb-2">
-				<div class="card">
-					<div class="card-body">
-						Asistance technique:
-						<span class="text-muted">00 999 999</span>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 mb-2">
-				<div class="card">
-					<div class="card-body">
-						Service commercial:
-						<span class="text-muted">00 888 888</span>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6 mb-2">
-				<div class="card">
-					<div class="card-body">
-						Agence les Berges du Lac:
-						<span class="text-muted">
-							App B5, 3ème étage, Résidence les Fleurs, Rue du Lac Turkana, 1053 Les Berges du Lac
-						</span>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 mb-2">
-				<div class="card">
-					<div class="card-body">
-						Agence El Mourouj:
-						<span class="text-muted">
-							App n° 01, 1er étage Résidence El Habib, El Mourouj 5 ,2074 Ben Arous
-						</span>
-					</div>
-				</div>
-			</div>
-		</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            Asistance technique:
+            <span class="text-muted">00 999 999</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            Service commercial:
+            <span class="text-muted">00 888 888</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            Agence les Berges du Lac:
+            <span class="text-muted">App B5, 3ème étage, Résidence les Fleurs, Rue du Lac Turkana, 1053 Les Berges du Lac</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            Agence El Mourouj:
+            <span class="text-muted">App n° 01, 1er étage Résidence El Habib, El Mourouj 5 ,2074 Ben Arous</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	</div>
+  {# <hr class="m-4"> #}
+  <div class="hr-container m-4">
+    <hr />
+    <span class="hr-text">Ou</span>
+  </div>
 
-	{# <hr class="m-4"> #}
-	<div class="hr-container m-4">
-		<hr>
-		<span class="hr-text">Ou</span>
-	</div>
+  <h5 class="m-4 d-flex justify-content-center">Envoyez-nous un message</h5>
 
-	<h5 class="m-4 d-flex justify-content-center">Envoyez-nous un message</h5>
+  <div class="container">
+    <div class="row">
+      {% for label, messages in app.flashes %}
+        <div class="alert alert-{{ label }}">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
 
-	<div class="container">
-		<div class="row">
-			{% for label, messages in app.flashes %}
-				<div class="alert alert-{{ label }}">
-					{% for message in messages %}
-						{{ message }}
-					{% endfor %}
-				</div>
-			{% endfor %}
-		</div>
+    {{ form_start(contactForm, { attr: { novalidate: 'novalidate' } }) }}
+    {{ form_row(contactForm._token) }}
 
-		{{ form_start(contactForm, { 'attr': { 'novalidate': 'novalidate' } }) }}
-		{{ form_row(contactForm._token) }}
+    {# hide username and email for loged in users, (the controller will handle them) #}
+    {% if not app.user %}
+      <div class="row">
+        <div class="col-md-6 form-group">{{ form_label(contactForm.fullName) }}
+          {{ form_widget(contactForm.fullName) }}</div>
 
-		{# hide username and email for loged in users, (the controller will handle them) #}
-		{% if not app.user %}
-			<div class="row">
-				<div class="col-md-6 form-group">
-					{{ form_label(contactForm.fullName) }}
-					{{ form_widget(contactForm.fullName) }}
-				</div>
+        <div class="col-md-6 form-group">{{ form_label(contactForm.email) }}
+          {{ form_widget(contactForm.email) }}</div>
+      </div>
+    {% else %}
+      <p class="d-inline-flex">
+        Username:
+        <span class="text-muted ml-2">{{ app.user.username }}</span>
+      </p>
+      <p class="d-inline-flex ml-md-4">
+        Email:
+        <span class="text-muted ml-2">{{ app.user.email }}</span>
+      </p>
+    {% endif %}
 
-				<div class="col-md-6 form-group">
-					{{ form_label(contactForm.email) }}
-					{{ form_widget(contactForm.email) }}
-				</div>
-			</div>
-		{% else %}
-			{# <div class=""> #}
-			<p class="d-inline-flex">Username:
-				<span class="text-muted ml-2">{{app.user.username}}</span>
-			</p>
-			<p class="d-inline-flex ml-md-4">
-				Email:
-				<span class="text-muted ml-2">{{app.user.email}}</span>
-			</p>
-			{# </div> #}
-		{% endif %}
+    <div class="row">
+      <div class="col form-group">{{ form_label(contactForm.message) }}
+        {{ form_widget(contactForm.message) }}</div>
+    </div>
 
-		<div class="row">
-			<div class="col form-group">
-				{{ form_label(contactForm.message) }}
-				{{ form_widget(contactForm.message) }}
-			</div>
-		</div>
+    <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
 
-		<button type="submit" class="btn btn-primary mt-3">Envoyer</button>
-
-		{{ form_end(contactForm, {'render_rest': false}) }}
-	</div>
+    {{ form_end(contactForm, { render_rest: false }) }}
+  </div>
 {% endblock %}
