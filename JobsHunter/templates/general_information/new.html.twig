@@ -46,8 +46,7 @@
                     <small class="text-muted">after editing this page, you should click "Update" button at the bottom</small>
                 </p>
                 <div class="container">
-                    <img id="general_information_photo_thumbnail" class="rounded-circle" 
-                    src="https://via.placeholder.com/120" width="120" height="120" />
+                    <img class="profile-img rounded-circle border border-primary" src="{{ absolute_url(asset('images/profile.png')) }}" width="120" height="120"/>
                 </div>
                 {{ include('general_information/_form.html.twig') }}
             </div>
