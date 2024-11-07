@@ -5,14 +5,12 @@ namespace App\Controller;
 use App\Entity\CV;
 use App\Form\CVType;
 use App\Repository\CVRepository;
-use App\Service\FileUploader;
 use App\Service\PrintCV;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/cv")
@@ -129,12 +127,13 @@ class CVController extends AbstractController {
         $cv = $seeker->getCv();
 
         return $this->render('cv/preview.html.twig', [
-            'cv' => $cv
+            'cv' => $cv,
+            'inline_styles' => false
         ]);
     }
 
     /**
-     * @Route("/{user}/_preview", name="cv_preview_template", methods={"GET"})
+     * @Route("/{user}/pdf_template", name="pdf_template", methods={"GET"})
      */
     public function previewTemplate() {
         $this->denyAccessUnlessGranted('ROLE_SEEKER');
@@ -144,30 +143,34 @@ class CVController extends AbstractController {
         $seeker = $user->getSeeker();
         $cv = $seeker->getCv();
 
-        return $this->render('cv/_preview.html.twig', [
-            'cv' => $cv
+        return $this->render('cv/pdf_template.html.twig', [
+            'cv' => $cv,
+            'inline_styles' => true
         ]);
     }
 
     /**
-     * @Route("/print/pdf", name="cv_print")
+     * @Route("/{user}/print/pdf", name="cv_print_pdf")
      */
-    public function printAction(FileUploader $fileUploader) {
-        /** @var \App\Entity\User $user */
-        $user = $this->security->getUser();
+    public function printAction() {
+        $this->denyAccessUnlessGranted('ROLE_SEEKER');
+
+        $user = $this->getUser();
+        // Fetch the CV data associated with the user
         $seeker = $user->getSeeker();
-        $cv = $seeker->getCv();
+        $cv = $seeker ? $seeker->getCv() : null;
 
-        $html = $this->renderView('cv/_preview.html.twig', [
-            'title' => "pdf preview",
-            'cv' => $cv
-        ]);
+        // Generate PDF from HTML
+        $pdfContent = $this->printCV->toPDF($cv);
 
-        file_put_contents(constant('OUTPUT_FILE'), $this->printCV->toPDF_tcpdf($html));
-
-        if ($fileUploader->isFileExists(constant("OUTPUT_FILE"))) {
-            return $this->file(constant("OUTPUT_FILE"), "cv_preview.pdf", ResponseHeaderBag::DISPOSITION_INLINE);
-        }
-        return $this->json(['error' => "CV preview file doesn't exist !"]);
+        // Return the PDF as a response
+        return new Response(
+            $pdfContent,
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="CV.pdf"',
+            ]
+        );
     }
 }

@@ -33,6 +33,9 @@ Encore
         ]
     }))
 
+    // PDF Styles for KNP Snappy
+    .addStyleEntry('pdf_styles', './assets/styles/pdf_styles.scss')
+
     .addPlugin(new BrowserSyncPlugin(
         {
             host: 'localhost',

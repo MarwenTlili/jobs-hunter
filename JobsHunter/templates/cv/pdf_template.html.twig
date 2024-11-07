@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  PDF Template
+{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ absolute_url(asset('build/app.css')) }}" />
+  {% if inline_styles %}
+    <link rel="stylesheet" href="{{ absolute_url(asset('build/pdf_styles.css')) }}" />
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  <div class="container-fluid p-2 d-flex flex-column min-vh-100">
+    <div class="cv flex-grow-1">
+      <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="seeker">
+            <div class="fullName">
+              <i class="bi bi-person"></i>
+              {{ cv.seeker.firstName }}
+              {{ cv.seeker.lastName }}
+            </div>
+            <div class="address">
+              <i class="bi bi-geo-alt"></i>
+              {{ cv.seeker.address }}
+            </div>
+            <div class="email">
+              <i class="bi bi-envelope"></i>
+              {{ app.user.getEmail() }}
+            </div>
+            {% if cv.generalInformation %}
+              {% if cv.generalInformation.phone %}
+                <div class="phone">
+                  <i class="bi bi-phone"></i>
+                  {{ cv.generalInformation.phone }}
+                </div>
+              {% endif %}
+              {% if cv.generalInformation.phone2 %}
+                <div class="phone">
+                  <i class="bi bi-phone"></i>
+                  {{ cv.generalInformation.phone2 }}
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
+          {% if cv.generalInformation %}
+            <div class="photo">
+              {% if cv.generalInformation.photo %}
+                <img class="profile-img rounded-circle border border-primary" src="{{ absolute_url(asset('uploads/brochures/' ~ cv.generalInformation.photo)) }}" width="100" height="100" />
+              {% else %}
+                <img class="profile-img rounded-circle border border-primary" src="{{ absolute_url(asset('images/profile.png')) }}" width="100" height="100" />
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+        <div class="title text-center">
+          <h3>Curriculum vitae</h3>
+        </div>
+        <div class="educations">
+          <h4>Educations</h4>
+          {% for education in cv.educations %}
+            <div class="education">
+              <div class="d-flex">
+                <div class="educationLevel">
+                  <h5>{{ education.educationLevel }}</h5>
+                </div>
+                <span class="text-muted h5">&nbsp;en&nbsp;</span>
+                <div class="diplomaTitle">
+                  <h5>{{ education.diplomaTitle }}</h5>
+                </div>
+              </div>
+              <div class="establishment">{{ education.establishment }}</div>
+              <div class="text-muted">
+                De: {{ education.startAt|date('d/m/Y') }}
+                {% if not education.current %}
+                  &nbsp;-&nbsp; A: {{ education.endAt|date('d/m/Y') }}
+                {% else %}
+                  &nbsp;-&nbsp; en cours ...
+                {% endif %}
+              </div>
+            </div>
+            <hr />
+          {% endfor %}
+        </div>
+        <div class="experiences">
+          <h4>Experiences</h4>
+          {% for experience in cv.experiences %}
+            <div class="experience">
+              <div class="jobTitle">
+                <h5>
+                  <i class="mr-2 bi bi-person-workspace"></i>
+                  {{ experience.jobTitle }}
+                </h5>
+              </div>
+
+              <div class="company">
+                <i class="mr-2 bi bi-buildings"></i>
+                {{ experience.company }}
+              </div>
+
+              <div class="startAt-endAt">
+                <i class="mr-2 bi bi-calendar-date"></i>
+                {{ experience.startAt|date('d/m/Y') }}
+                {% if not experience.current %}
+                  &nbsp;-&nbsp; {{ experience.endAt|date('d/m/Y') }}
+                {% else %}
+                  &nbsp;-&nbsp;en cours ...
+                {% endif %}
+              </div>
+
+              {% if experience.experienceLevel %}
+                <div class="d-flex mb-2">
+                  <span class="mr-2">
+                    <i class="mr-2 bi bi-award"></i>
+                    Niveau d'experience:
+                  </span>
+                  <div class="experienceLevel text-muted">{{ experience.experienceLevel }}</div>
+                </div>
+              {% endif %}
+
+              <div class="description text-muted text-justify">{{ experience.description|raw }}</div>
+            </div>
+            <hr />
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="social-links">
+        <h4>Liens sociaux</h4>
+        <div class="links d-flex flex-wrap">
+          {% if cv.socialLink %}
+            {% if cv.socialLink.github %}
+              <div class="d-inline-flex align-items-center mr-4">
+                <i class="mr-1 bi bi-github"></i>
+                {{ cv.socialLink.github }}
+              </div>
+            {% endif %}
+            {% if cv.socialLink.facebook %}
+              <div class="d-inline-flex align-items-center mr-4">
+                <i class="mr-1 bi bi-facebook"></i>
+                {{ cv.socialLink.facebook }}
+              </div>
+            {% endif %}
+            {% if cv.socialLink.twitter %}
+              <div class="d-inline-flex align-items-center mr-4">
+                <i class="mr-1 bi bi-twitter"></i>
+                {{ cv.socialLink.twitter }}
+              </div>
+            {% endif %}
+            {% if cv.socialLink.instagram %}
+              <div class="d-inline-flex align-items-center mr-4">
+                <i class="mr-1 bi bi-instagram"></i>
+                {{ cv.socialLink.instagram }}
+              </div>
+            {% endif %}
+            {% if cv.socialLink.youtube %}
+              <div class="d-inline-flex align-items-center mr-4">
+                <i class="mr-1 bi bi-youtube"></i>
+                {{ cv.socialLink.youtube }}
+              </div>
+            {% endif %}
+            {% if cv.socialLink.stackoverflow %}
+              <div class="d-inline-flex align-items-center mr-4">
+                <i class="mr-1 bi bi-stack-overflow"></i>
+                {{ cv.socialLink.stackoverflow }}
+              </div>
+            {% endif %}
+            {% if cv.socialLink.website %}
+              <div class="d-inline-flex align-items-center mr-4">
+                <i class="mr-1 bi bi-globe"></i>
+                {{ cv.socialLink.website }}
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

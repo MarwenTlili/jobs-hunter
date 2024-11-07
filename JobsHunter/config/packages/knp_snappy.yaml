@@ -1,10 +1,15 @@
 knp_snappy:
     pdf:
-        enabled:    true
-        binary:     '%env(WKHTMLTOPDF_PATH)%'
-        options:    []
+        enabled: true
+        binary: "%env(WKHTMLTOPDF_PATH)%"
+        options:
+            # disable-smart-shrinking: true
+            enable-local-file-access: true
+            no-stop-slow-scripts: true
+            # viewport-size: "1280x1024"
     image:
-        enabled:    true
-        binary:     '%env(WKHTMLTOIMAGE_PATH)%'
-        options:    []
+        enabled: true
+        binary: "%env(WKHTMLTOIMAGE_PATH)%"
+        options: []
     temporary_folder: "%kernel.cache_dir%/snappy"
+    process_timeout: 60 # In seconds

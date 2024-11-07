@@ -14,11 +14,8 @@ RUN apt update \
     && docker-php-ext-install zip \
     && docker-php-ext-install bcmath
 
-# tecnickcom/tc-lib-pdf requirements
-RUN apt update \
-    && apt install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
-    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-    && docker-php-ext-install gd 
+# generate pdf/image from url
+RUN apt update && apt install wkhtmltopdf -y
 
 WORKDIR /var/www/jobshunter
 
@@ -26,7 +23,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 
-# RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
 RUN git config --global user.email "marwentlili@gmail.com" \ 
     && git config --global user.name "marwentlili" \

@@ -29,8 +29,9 @@ class GeneralInformationType extends AbstractType
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
+                            'image/svg+xml'
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid Image file (jpeg/png)',
+                        'mimeTypesMessage' => 'Please upload a valid Image file (jpeg/png/svg) with maximum size of 1024k|1m',
                     ])
                 ]
             ])

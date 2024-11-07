@@ -1,0 +1,13 @@
+@media print {
+  html,
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  /* Ensure social-links are always at the bottom of the page */
+  .social-links {
+    position: absolute;
+    bottom: 0;
+  }
+}
