@@ -9,15 +9,22 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ContactType extends AbstractType {
+    private $security;
+    public function __construct(Security $security) {
+        $this->security = $security;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void {
+        $user = $this->security->getUser();
+
         $builder
             ->add('fullName', TextType::class, [
                 'label' => 'Nom complet',
                 'attr' => ['class' => 'form-control'],
-                'constraints' => [
+                'constraints' => $user ? [] : [
                     new NotBlank([
                         'message' => 'Le champ du nom ne peut pas être vide!'
                     ])
@@ -26,7 +33,7 @@ class ContactType extends AbstractType {
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'attr' => ['class' => 'form-control'],
-                'constraints' => [
+                'constraints' => $user ? [] : [
                     new NotBlank([
                         'message' => 'Le champ d\'Email ne peut pas être vide!'
                     ])
