@@ -24,18 +24,22 @@ Encore
      */
     .addEntry('app', './assets/app.js')
 
-    // Add TinyMCE to your assets
-    .addEntry('tinymce', './assets/scripts/tinymce.js')
-    // Copy TinyMCE skins and themes to the public directory
+    // Copy TinyMCE plugins and skins to the public directory
     .addPlugin(new CopyPlugin({
         patterns: [
+            { from: './node_modules/tinymce/plugins', to: 'plugins' },
+            { from: './node_modules/tinymce/themes', to: 'themes' },
             { from: './node_modules/tinymce/skins', to: 'skins' },
         ]
     }))
+    // Add TinyMCE to your assets
+    .addEntry('tinymce', './assets/scripts/tinymce.js')
 
     // PDF Styles for KNP Snappy
     .addStyleEntry('pdf_styles', './assets/styles/pdf_styles.scss')
 
+    // Enables BrowserSync to automatically reload your browser whenever you 
+    // make changes to specified files
     .addPlugin(new BrowserSyncPlugin(
         {
             host: 'localhost',

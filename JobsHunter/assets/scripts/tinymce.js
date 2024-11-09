@@ -14,5 +14,11 @@ tinymce.init({
       items: 'undo, redo, selectall'
     }
   },
-  skin_url: '/build/skins/ui/oxide',
+  plugins: 'advlist link lists',
+  toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | outdent indentt | bullist numlisundo redo',
+  skin: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oxide-dark' : 'oxide'),
+  content_css: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default'),
+  external_plugins: {
+    'lists': '/build/plugins/lists/plugin.min.js'
+  }
 });
