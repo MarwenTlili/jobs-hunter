@@ -31,6 +31,11 @@ class Contact {
      */
     private $message;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isOpen;
+
     public function getId(): ?int {
         return $this->id;
     }
@@ -63,5 +68,20 @@ class Contact {
         $this->message = $message;
 
         return $this;
+    }
+
+    public function getIsOpen(): ?bool {
+        return $this->isOpen;
+    }
+
+    public function setIsOpen(?bool $isOpen): self {
+        $this->isOpen = $isOpen;
+
+        return $this;
+    }
+
+    // To display the status field in admin dashboard
+    function getStatus(): ?string {
+        return $this->getIsOpen();
     }
 }

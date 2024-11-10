@@ -23,6 +23,7 @@ class ContactController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var \App\Entity\Contact $contact */
             $contact = $form->getData();
+            $contact->setIsOpen(false);
 
             // Use loged in user name and email to submit contact form
             if ($user) {
