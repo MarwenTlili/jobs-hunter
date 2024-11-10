@@ -5,12 +5,9 @@ namespace App\Controller;
 use App\Entity\CV;
 use App\Entity\Job;
 use App\Entity\Seeker;
-use App\Entity\User;
 use App\Form\SeekerType;
 use App\Repository\CountryRepository;
 use App\Repository\SeekerRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,19 +17,17 @@ use Symfony\Component\Security\Core\Security;
 /**
  * @Route("/seeker")
  */
-class SeekerController extends AbstractController
-{
+class SeekerController extends AbstractController {
     private $security;
 
-    public function __construct(Security $security){
+    public function __construct(Security $security) {
         $this->security = $security;
     }
 
     /**
      * @Route("/", name="seeker_index", methods={"GET"})
      */
-    public function index(SeekerRepository $seekerRepository): Response
-    {
+    public function index(SeekerRepository $seekerRepository): Response {
         return $this->render('seeker/index.html.twig', [
             'seekers' => $seekerRepository->findAll(),
         ]);
@@ -41,8 +36,7 @@ class SeekerController extends AbstractController
     /**
      * @Route("/new", name="seeker_new", methods={"GET","POST"})
      */
-    public function new(Request $request, CountryRepository $countryRepository): Response
-    {
+    public function new(Request $request, CountryRepository $countryRepository): Response {
         $seeker = new Seeker();
         $seeker->setUser($this->getUser()); // set current loged user
         $seeker->setCountry($countryRepository->findOneBy(['name' => 'Tunisia'])); // set default country
@@ -73,8 +67,7 @@ class SeekerController extends AbstractController
     /**
      * @Route("/{id}", name="seeker_show", methods={"GET"})
      */
-    public function show(Seeker $seeker): Response
-    {
+    public function show(Seeker $seeker): Response {
         return $this->render('seeker/show.html.twig', [
             'seeker' => $seeker,
         ]);
@@ -83,8 +76,7 @@ class SeekerController extends AbstractController
     /**
      * @Route("/{id}/edit", name="seeker_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Seeker $seeker): Response
-    {
+    public function edit(Request $request, Seeker $seeker): Response {
         $user = $this->getUser();
         $seeker = $user->getSeeker();
         $form = $this->createForm(SeekerType::class, $seeker);
@@ -105,9 +97,8 @@ class SeekerController extends AbstractController
     /**
      * @Route("/{id}", name="seeker_delete", methods={"POST"})
      */
-    public function delete(Request $request, Seeker $seeker): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$seeker->getId(), $request->request->get('_token'))) {
+    public function delete(Request $request, Seeker $seeker): Response {
+        if ($this->isCsrfTokenValid('delete' . $seeker->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($seeker);
             $entityManager->flush();
@@ -119,8 +110,7 @@ class SeekerController extends AbstractController
     /**
      * @Route("/apply/{job}", name="seeker_apply_job")
      */
-    public function applyForJob(Job $job): Response
-    {
+    public function applyForJob(Job $job): Response {
         /** @var \App\Entity\User $user */
         $user = $this->security->getUser();
 
@@ -133,8 +123,8 @@ class SeekerController extends AbstractController
         $manager->flush();
 
         $this->addFlash(
-           'success',
-           'you successfuly applyed for job "'.$job->getTitle().'"'
+            'success',
+            'you successfuly applyed for job "' . $job->getTitle() . '"'
         );
 
         return $this->redirectToRoute('job_show', [
