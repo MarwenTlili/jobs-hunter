@@ -15,13 +15,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
-class RegistrationFormType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+class RegistrationFormType extends AbstractType {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('roles', CollectionType::class,[
+            ->add('roles', CollectionType::class, [
                 'entry_type'   => ChoiceType::class,
                 'entry_options'  => [
                     'label' => false,
@@ -32,9 +31,26 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('username', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Username cannot be blank.',
+                    ]),
+                    new Length([
+                        'min' => 3,
+                        'max' => 30,
+                        'minMessage' => 'Username must be at least {{ limit }} characters long.',
+                        'maxMessage' => 'Username cannot be longer than {{ limit }} characters.',
+                    ]),
+                    // can only contain letters, numbers, and a single dot.
+                    // Dots cannot be consecutive.
+                    // cannot end with a dot.
+                    new Regex([
+                        'pattern' => '/^(?!.*\.\.)(?!.*\.$)[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?$/',
+                        'message' => "username format error, check rules!"
+                    ]),
+                ],
             ])
-            ->add('email', EmailType::class, [
-            ])
+            ->add('email', EmailType::class, [])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -64,8 +80,7 @@ class RegistrationFormType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);

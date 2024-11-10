@@ -1,27 +1,42 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}
+  Register
+{% endblock %}
 
 {% block body %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
+  {% for flashError in app.flashes('verify_email_error') %}
+    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+  {% endfor %}
 
-    <div class="container-fluid">
-        <h1>Register</h1>
+  <div class="container-fluid">
+    <h1>Register</h1>
 
-        {{ form_start(registrationForm) }}
-            {# {{ form_widget(registrationForm) }} #}
-            {{ form_row(registrationForm.roles, {
-                'label': 'Role'
-            }) }}
-            {{ form_row(registrationForm.username) }}
-            {{ form_row(registrationForm.email) }}
-            {{ form_row(registrationForm.plainPassword, { 
-                label: 'Password' 
-            }) }}
-            {{ form_row(registrationForm.agreeTerms) }}
-            <button type="submit" class="btn btn-success">Register</button>
-        {{ form_end(registrationForm) }}
+    {{ form_start(registrationForm) }}
+    {{ form_row(registrationForm._token) }}
+    {{ form_row(registrationForm.roles, { label: 'Role' }) }}
+
+    <div class="form-group">
+      <div>
+        {{ form_label(registrationForm.username) }}
+        <small class="text-muted">
+            <i class="bi bi-info-circle" data-toggle="tooltip" data-placement="top" title="The username must follow these rules:
+            - It can only contain letters, numbers, and a single dot.
+            - Dots cannot be consecutive.
+            - The username cannot end with a dot." style="color:deepskyblue"></i>
+        </small>
+      </div>
+      {{ form_widget(registrationForm.username) }}
     </div>
+
+    <div class="form-group">{{ form_row(registrationForm.email) }}</div>
+
+    <div class="form-group">{{ form_label(registrationForm.plainPassword, 'Password') }}
+      {{ form_widget(registrationForm.plainPassword) }}
+      {{ form_errors(registrationForm.plainPassword) }}</div>
+
+    {{ form_row(registrationForm.agreeTerms) }}
+    <button type="submit" class="btn btn-success">Register</button>
+    {{ form_end(registrationForm, { render_rest: false }) }}
+  </div>
 {% endblock %}
