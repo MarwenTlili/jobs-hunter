@@ -83,7 +83,7 @@ class SeekerController extends AbstractController
     /**
      * @Route("/{id}/edit", name="seeker_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Seeker $seeker, User $user): Response
+    public function edit(Request $request, Seeker $seeker): Response
     {
         $user = $this->getUser();
         $seeker = $user->getSeeker();
