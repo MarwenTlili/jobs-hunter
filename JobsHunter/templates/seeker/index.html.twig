@@ -13,7 +13,7 @@
                 {% if seeker.cv %} {# if seeker has a CV #}
                     <div class="col">
                         <div id="seeker_card" class="card mb-4" style="width: 15rem;">
-                            {% if seeker.cv.generalInformation.photo %}
+                            {% if seeker.cv.generalInformation and seeker.cv.generalInformation.photo %}
                                 <img src="{{ asset('uploads/brochures/' ~ seeker.cv.generalInformation.photo) }}" class="card-img-top" alt="...">
                             {% else %}
                                 <img src="https://via.placeholder.com/120" class="card-img-top" alt="..." >
@@ -22,7 +22,9 @@
                                 <h5 class="card-title">
                                     {{ seeker.firstName }} {{ seeker.lastName }}
                                 </h5>
-                                <p class="card-text">{{ seeker.cv.generalInformation.motivation[:80] ~ ' ...' }}</p>
+                                {% if seeker.cv.generalInformation %}
+                                    <p class="card-text">{{ seeker.cv.generalInformation.motivation[:80] ~ ' ...' }}</p>
+                                {% endif %}
                                 <a href="{{ path('cv_preview_for_company', {'user': seeker.getUser.getId}) }}" class="btn btn-primary">show</a>
                             </div>
                         </div>
